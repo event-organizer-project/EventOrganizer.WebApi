@@ -23,13 +23,16 @@ namespace EventOrganizer.EF.Repositories
 
         public EventModel Get(int id)
         {
-            var model = dbContext.Events.FirstOrDefault(x => x.Id == id);
+            throw new NotImplementedException();
 
-            return model;
+            //var model = dbcontext.events.firstordefault(x => x.id == id);
+
+            //return model;
         }
 
         public EventModel Create(EventModel eventModel)
         {
+            return new EventModel();
             throw new NotImplementedException();
         }
 

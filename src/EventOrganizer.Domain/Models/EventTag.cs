@@ -2,7 +2,10 @@
 {
     public class EventTag
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public string Keyword { get; set; }
+
+        public ICollection<EventModel> EventModels { get; set; }
+
+        public ICollection<TagToEvent> TagToEvents { get; set; }
     }
 }
