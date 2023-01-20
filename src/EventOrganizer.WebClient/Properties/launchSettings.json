@@ -3,7 +3,7 @@
     "EventOrganizer.WebClient": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/event/1",
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

@@ -1,14 +1,13 @@
 ﻿using EventOrganizer.Core.Commands;
 using EventOrganizer.Core.Commands.EventCommands;
-using EventOrganizer.Core.Infrastructure;
 using EventOrganizer.Core.Queries;
 using EventOrganizer.Core.Queries.EventQueries;
 using EventOrganizer.Domain.Models;
 using EventOrganizer.WebClient.ModelMappers;
 using EventOrganizer.WebClient.Views;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Net;
 
 namespace EventOrganizer.WebClient.Controllers
 {
@@ -27,25 +26,43 @@ namespace EventOrganizer.WebClient.Controllers
             this.getEventListQuery = getEventListQuery
                     ?? throw new ArgumentNullException(nameof(getEventListQuery));
         }
-        // GET: api/<EventController>
+
+        /// <summary>
+        /// Returns a list of events according to the given criteria
+        /// </summary>
+        /// <param name="filter">Event filter</param>
+        /// <returns>Event List</returns>
         [HttpGet]
-        public ActionResult<IList<EventPreviewModel>> Get(EventListSettings eventListSettings)
+        public ActionResult<IList<EventPreviewModel>> Get(string filter)
         {
-            var parametrs = new GetEventListQueryParamters {  EventListSettings = eventListSettings };
+            var parametrs = new GetEventListQueryParamters();
             var result = getEventListQuery.Execute(parametrs);
 
             var eventList = EventMapper.MapModelListToPreviewList(result);
             return Ok(eventList);
         }
 
-        // GET api/<EventController>/5
+        /// <summary>
+        /// Returns an event for the given id.
+        /// </summary>
+        /// <param name="id">Event identifier</param>
+        /// <returns>Event</returns>
+        [SwaggerResponse((int)HttpStatusCode.OK)]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
         [HttpGet("{id}")]
         public ActionResult<EventViewModel> Get(int id)
         {
             return Ok(new EventViewModel { Id = id });
         }
 
-        // POST api/<EventController>
+        /// <summary>
+        /// Creates an event.
+        /// </summary>
+        /// <param name="eventView"></param>
+        /// <returns>A newly created event</returns>
+        [SwaggerResponse((int)HttpStatusCode.Created)]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest)]
+        [Produces("application/json")]
         [HttpPost]
         public ActionResult<EventViewModel> Post([FromBody] EventViewModel eventView)
         {
@@ -57,14 +74,27 @@ namespace EventOrganizer.WebClient.Controllers
             return Ok(createdEvent);
         }
 
-        // PUT api/<EventController>/5
-        [HttpPut("{id}")]
-        public ActionResult<EventModel> Put(int id, [FromBody] string value)
+        /// <summary>
+        /// Updates an event.
+        /// </summary>
+        /// <param name="eventView"></param>
+        /// <returns>An updated event</returns>
+        [SwaggerResponse((int)HttpStatusCode.OK)]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest)]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        [Produces("application/json")]
+        [HttpPut]
+        public ActionResult<EventViewModel> Put([FromBody] EventViewModel eventView)
         {
             throw new NotImplementedException();
         }
 
-        // DELETE api/<EventController>/5
+        /// <summary>
+        /// Removes a specific event for the given id.
+        /// </summary>
+        /// <param name="id">Event identifier</param>
+        /// <returns></returns>
+        [SwaggerResponse((int)HttpStatusCode.OK)]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
