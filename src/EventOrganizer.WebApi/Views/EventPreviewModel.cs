@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EventOrganizer.WebClient.Views
+namespace EventOrganizer.WebApi.Views
 {
     public class EventPreviewModel
     {

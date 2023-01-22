@@ -3,13 +3,13 @@ using EventOrganizer.Core.Commands.EventCommands;
 using EventOrganizer.Core.Queries;
 using EventOrganizer.Core.Queries.EventQueries;
 using EventOrganizer.Domain.Models;
-using EventOrganizer.WebClient.ModelMappers;
-using EventOrganizer.WebClient.Views;
+using EventOrganizer.WebApi.ModelMappers;
+using EventOrganizer.WebApi.Views;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
-namespace EventOrganizer.WebClient.Controllers
+namespace EventOrganizer.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -52,7 +52,14 @@ namespace EventOrganizer.WebClient.Controllers
         [HttpGet("{id}")]
         public ActionResult<EventViewModel> Get(int id)
         {
-            return Ok(new EventViewModel { Id = id });
+            var eventView = new EventViewModel
+            {
+                Id = id,
+                Title = $"Event number {id}",
+                Description = $"Description for event number {id}"
+            };
+
+            return Ok(eventView);
         }
 
         /// <summary>

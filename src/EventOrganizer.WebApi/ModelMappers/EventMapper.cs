@@ -1,9 +1,9 @@
 ﻿using EventOrganizer.Domain.Models;
-using EventOrganizer.WebClient.Views;
+using EventOrganizer.WebApi.Views;
 using System;
 using System.Collections.Generic;
 
-namespace EventOrganizer.WebClient.ModelMappers
+namespace EventOrganizer.WebApi.ModelMappers
 {
     public class EventMapper
     {
