@@ -1,10 +1,6 @@
-﻿using EventOrganizer.Core.Commands;
-using EventOrganizer.Core.Commands.EventCommands;
+﻿using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Queries;
 using EventOrganizer.Core.Queries.EventQueries;
-using EventOrganizer.Domain.Models;
-using EventOrganizer.WebApi.ModelMappers;
-using EventOrganizer.WebApi.Views;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
@@ -15,16 +11,17 @@ namespace EventOrganizer.WebApi.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        private ICommand<CreateEventCommandParameters, EventModel> createEventCommand;
-        private IQuery<GetEventListQueryParamters, IList<EventModel>> getEventListQuery;
+        private readonly IQuery<GetEventListQueryParameters, IList<EventDTO>> getEventListQuery;
+        private readonly IQuery<GetEventByIdQueryParameters, EventDetailDTO> getEventByIdQuery;
 
-        public EventController(ICommand<CreateEventCommandParameters, EventModel> createEventCommand,
-            IQuery<GetEventListQueryParamters, IList<EventModel>> getEventListQuery)
+        public EventController(
+            IQuery<GetEventListQueryParameters, IList<EventDTO>> getEventListQuery,
+            IQuery<GetEventByIdQueryParameters, EventDetailDTO> getEventByIdQuery)
         {
-            this.createEventCommand = createEventCommand
-                ?? throw new ArgumentNullException(nameof(createEventCommand));
             this.getEventListQuery = getEventListQuery
-                    ?? throw new ArgumentNullException(nameof(getEventListQuery));
+                ?? throw new ArgumentNullException(nameof(getEventListQuery));
+            this.getEventByIdQuery = getEventByIdQuery
+                ?? throw new ArgumentNullException(nameof(getEventByIdQuery));
         }
 
         /// <summary>
@@ -33,13 +30,15 @@ namespace EventOrganizer.WebApi.Controllers
         /// <param name="filter">Event filter</param>
         /// <returns>Event List</returns>
         [HttpGet]
-        public ActionResult<IList<EventPreviewModel>> Get(string filter)
+        public ActionResult<IList<EventDTO>> Get(string? filter = null)
         {
-            var parametrs = new GetEventListQueryParamters();
-            var result = getEventListQuery.Execute(parametrs);
+            var result = getEventListQuery.Execute(new GetEventListQueryParameters { 
+                Filter = filter,
+                Top = 20,
+                Skip = 0
+            });
 
-            var eventList = EventMapper.MapModelListToPreviewList(result);
-            return Ok(eventList);
+            return Ok(result);
         }
 
         /// <summary>
@@ -50,16 +49,11 @@ namespace EventOrganizer.WebApi.Controllers
         [SwaggerResponse((int)HttpStatusCode.OK)]
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
         [HttpGet("{id}")]
-        public ActionResult<EventViewModel> Get(int id)
+        public ActionResult<EventDetailDTO> Get(int id)
         {
-            var eventView = new EventViewModel
-            {
-                Id = id,
-                Title = $"Event number {id}",
-                Description = $"Description for event number {id}"
-            };
+            var result = getEventByIdQuery.Execute(new GetEventByIdQueryParameters { Id = id });
 
-            return Ok(eventView);
+            return Ok(result);
         }
 
         /// <summary>
@@ -71,14 +65,9 @@ namespace EventOrganizer.WebApi.Controllers
         [SwaggerResponse((int)HttpStatusCode.BadRequest)]
         [Produces("application/json")]
         [HttpPost]
-        public ActionResult<EventViewModel> Post([FromBody] EventViewModel eventView)
+        public ActionResult<EventDetailDTO> Post([FromBody] EventDetailDTO eventView)
         {
-            var eventModel = EventMapper.MapViewToModel(eventView);
-            var parameters = new CreateEventCommandParameters { EventModel = eventModel };
-            var result = createEventCommand.Execute(parameters);
-
-            var createdEvent = EventMapper.MapModelToView(result);
-            return Ok(createdEvent);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -91,7 +80,7 @@ namespace EventOrganizer.WebApi.Controllers
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
         [Produces("application/json")]
         [HttpPut]
-        public ActionResult<EventViewModel> Put([FromBody] EventViewModel eventView)
+        public ActionResult<EventDetailDTO> Put(EventDetailDTO eventView)
         {
             throw new NotImplementedException();
         }

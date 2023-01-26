@@ -13,9 +13,9 @@
 
         public DateTime? EndDate { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public TimeSpan EndTime { get; set; }
 
         public RecurrenceType RecurrenceType { get; set; }
         // Event Time Settings
@@ -24,7 +24,7 @@
 
         public virtual ICollection<TagToEvent> TagToEvents { get; set; }
 
-        public User Owner { get; set; }
+        public virtual User Owner { get; set; }
 
         public virtual ICollection<User> Members { get; set; }
 

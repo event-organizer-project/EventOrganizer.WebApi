@@ -4,11 +4,11 @@
     {
         public int UserId { get; set; }
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public int EventId { get; set; }
 
-        public EventModel EventModel { get; set; }
+        public virtual EventModel EventModel { get; set; }
 
         public DateTime JoiningDate { get; set; }
 

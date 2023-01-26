@@ -11,6 +11,6 @@ namespace EventOrganizer.Domain.Models
 
         public DateTime DateTime { get; set; }
 
-        public EventModel Event { get; set; }
+        public virtual EventModel Event { get; set; }
     }
 }

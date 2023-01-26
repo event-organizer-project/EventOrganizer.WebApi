@@ -14,6 +14,13 @@ namespace EventOrganizer.EF.EntityConfigurations
             builder.HasMany(et => et.EventModels)
                 .WithMany(em => em.EventTags)
                 .UsingEntity<TagToEvent>();
+
+            // Initial data seeding
+            builder.HasData(
+                new EventTag { Keyword = "godel" },
+                new EventTag { Keyword = "online" },
+                new EventTag { Keyword = "entertainment" }
+                );
         }
     }
 }

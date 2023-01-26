@@ -4,6 +4,7 @@ using EventOrganizer.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventOrganizer.EF.Migrations
 {
     [DbContext(typeof(EventOrganazerDbContext))]
-    partial class EventOrganazerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221215144659_Update_EventModel_Time_Settings")]
+    partial class UpdateEventModelTimeSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "7.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -166,20 +169,6 @@ namespace EventOrganizer.EF.Migrations
                     b.HasKey("Keyword");
 
                     b.ToTable("EventTags");
-
-                    b.HasData(
-                        new
-                        {
-                            Keyword = "godel"
-                        },
-                        new
-                        {
-                            Keyword = "online"
-                        },
-                        new
-                        {
-                            Keyword = "entertainment"
-                        });
                 });
 
             modelBuilder.Entity("EventOrganizer.Domain.Models.TagToEvent", b =>
@@ -195,18 +184,6 @@ namespace EventOrganizer.EF.Migrations
                     b.HasIndex("Keyword");
 
                     b.ToTable("TagToEvent", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            EventId = 1,
-                            Keyword = "godel"
-                        },
-                        new
-                        {
-                            EventId = 1,
-                            Keyword = "online"
-                        });
                 });
 
             modelBuilder.Entity("EventOrganizer.Domain.Models.User", b =>
@@ -242,6 +219,7 @@ namespace EventOrganizer.EF.Migrations
                     b.HasBaseType("EventOrganizer.Domain.Models.EventModel");
 
                     b.Property<string>("Location")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("OfflineEvent");
@@ -252,23 +230,10 @@ namespace EventOrganizer.EF.Migrations
                     b.HasBaseType("EventOrganizer.Domain.Models.EventModel");
 
                     b.Property<string>("MeetingLink")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("OnlineEvent");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Mastery completion and presentation of the final product",
-                            EndDate = new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndTime = new TimeSpan(0, 20, 0, 0, 0),
-                            IsMessagingAllowed = false,
-                            RecurrenceType = 0,
-                            StartDate = new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartTime = new TimeSpan(0, 18, 0, 0, 0),
-                            Title = "Event organizer presentation"
-                        });
                 });
 
             modelBuilder.Entity("EventOrganizer.Domain.Models.DialogueMessage", b =>

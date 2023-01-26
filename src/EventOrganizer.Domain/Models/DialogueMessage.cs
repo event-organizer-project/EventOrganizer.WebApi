@@ -8,8 +8,8 @@
 
         public DateTime DateTime { get; set; }
 
-        public User Sender { get; set; }
+        public virtual User Sender { get; set; }
 
-        public EventModel Event { get; set; }
+        public virtual EventModel Event { get; set; }
     }
 }

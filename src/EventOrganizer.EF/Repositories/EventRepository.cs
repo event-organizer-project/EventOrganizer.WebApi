@@ -1,9 +1,5 @@
-﻿using EventOrganizer.Core.Infrastructure;
-using EventOrganizer.Core.Repositories;
+﻿using EventOrganizer.Core.Repositories;
 using EventOrganizer.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace EventOrganizer.EF.Repositories
 {
@@ -16,24 +12,23 @@ namespace EventOrganizer.EF.Repositories
             dbContext = eventOrganazerDbContext;
         }
 
-        public IList<EventModel> GetEventList(EventListSettings eventListSettings)
+        public IEnumerable<EventModel> GetAll()
         {
-            throw new NotImplementedException();
+            return dbContext.EventModels;
         }
 
         public EventModel Get(int id)
         {
-            throw new NotImplementedException();
+            var model = dbContext.EventModels.FirstOrDefault(x => x.Id == id);
 
-            //var model = dbcontext.events.firstordefault(x => x.id == id);
-
-            //return model;
+            return model;
         }
 
         public EventModel Create(EventModel eventModel)
         {
-            return new EventModel();
-            throw new NotImplementedException();
+            dbContext.EventModels.Add(eventModel);
+
+            return eventModel;
         }
 
         public EventModel Update(EventModel eventModel)
@@ -43,7 +38,12 @@ namespace EventOrganizer.EF.Repositories
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var eventModel = dbContext.EventModels.FirstOrDefault(x => x.Id == id);
+
+            if (eventModel == null)
+                throw new ArgumentException();
+
+            dbContext.EventModels.Remove(eventModel);
         }
     }
 }

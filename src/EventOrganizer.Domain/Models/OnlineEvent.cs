@@ -2,6 +2,6 @@
 {
     public class OnlineEvent : EventModel
     {
-        public string MeetingLink { get; set; }
+        public string? MeetingLink { get; set; }
     }
 }

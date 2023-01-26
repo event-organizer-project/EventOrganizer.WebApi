@@ -1,25 +1,25 @@
-using EventOrganizer.Core.Commands.EventCommands;
-using EventOrganizer.Core.Commands;
 using EventOrganizer.Core.Queries.EventQueries;
 using EventOrganizer.Core.Queries;
 using EventOrganizer.Core.Repositories;
-using EventOrganizer.Domain.Models;
 using EventOrganizer.EF.Repositories;
 using EventOrganizer.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using EventOrganizer.Core.DTO;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<EventOrganazerDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddTransient<IQuery<GetEventListQueryParamters, IList<EventModel>>, GetEventListQuery>();
-builder.Services.AddTransient<ICommand<CreateEventCommandParameters, EventModel>, CreateEventCommand>();
+builder.Services.AddTransient<IQuery<GetEventListQueryParameters, IList<EventDTO>>, GetEventListQuery>();
+builder.Services.AddTransient<IQuery<GetEventByIdQueryParameters, EventDetailDTO>, GetEventByIdQuery>();
 
 builder.Services.AddTransient<IEventRepository, EventRepository>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 

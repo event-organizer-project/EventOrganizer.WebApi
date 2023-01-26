@@ -4,8 +4,8 @@
     {
         public string Keyword { get; set; }
 
-        public ICollection<EventModel> EventModels { get; set; }
+        public virtual ICollection<EventModel> EventModels { get; set; }
 
-        public ICollection<TagToEvent> TagToEvents { get; set; }
+        public virtual ICollection<TagToEvent> TagToEvents { get; set; }
     }
 }

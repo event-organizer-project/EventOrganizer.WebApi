@@ -1,12 +1,10 @@
-﻿using EventOrganizer.Core.Infrastructure;
-using EventOrganizer.Domain.Models;
-using System.Collections.Generic;
+﻿using EventOrganizer.Domain.Models;
 
 namespace EventOrganizer.Core.Repositories
 {
     public interface IEventRepository
     {
-        IList<EventModel> GetEventList(EventListSettings eventListSettings);
+        IEnumerable<EventModel> GetAll();
 
         EventModel Get(int id);
 

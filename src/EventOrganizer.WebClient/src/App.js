@@ -39,15 +39,22 @@ const App = () => {
                 </button>
             </form>
             <div>
-                <h4>Event ID:</h4>
-                <label>{event.id}</label>
-
                 <h4>Event Title:</h4>
                 <label>{event.title}</label>
 
-                <h4>Event Description</h4>
+                <h4>Event Description:</h4>
                 <label>{event.description}</label>
 
+                <h4>Start Date:</h4>
+                <label>{event.startDate} {event.startTime}</label>
+
+                <h4>End Date:</h4>
+                <label>{event.endDate} {event.endTime}</label>
+
+                <h4>Tags:</h4>
+                {event.eventTags.map(tag =>
+                    <label>#{tag} </label>
+                    )}
             </div>
         </div>
     )
