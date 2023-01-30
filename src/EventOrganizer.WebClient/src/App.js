@@ -1,63 +1,66 @@
-import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux'
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import ErrorPage from './components/ErrorPage/ErrorPage';
+import StartPage from './components/StartPage/StartPage';
+import AllEventsPage from './components/AllEventsPage/AllEventsPage';
+import OwnEventsPage from './components/OwnEventsPage/OwnEventsPage';
+import CalendarPage from './components/CalendarPage/CalendarPage';
+import SpecificEventPage, {
+    loader as eventLoader,
+} from './components/SpecificEventPage/SpecificEventPage';
+import routes from './constants/route-constants';
 
-const App = () => {
+export default function App () {
 
-    const [event, setEvent] = useState({})
-    const [eventId, setEventId] = useState({});
+    const isUserSignedIn = useSelector((state) => state.auth.isUserSignedIn)
 
-    const getEvent = (id) => fetch(`api/event/${id}`)
-        .then(response => { return response.json() })
-        .then(responseJson => {
-            setEvent(responseJson)
-        });
-
-    const onSubmit = (e) => {
-        e.preventDefault();
-        getEvent(eventId);
-    }
-
-    return (
-        <div className="container">
-            <form>
-                <h3>Get specific event</h3>
-
-                <div>
-                    <label>Event Id:</label>
-                    <input
-                        type="number"
-                        placeholder="Input event ID"
-                        name="eventId"
-                        value={eventId}
-                        onChange={(e) => setEventId(e.target.value)}
-                    />
-                </div>
-
-                <button
-                    type="submit"
-                    onClick={onSubmit} >
-                    Search
-                </button>
-            </form>
-            <div>
-                <h4>Event Title:</h4>
-                <label>{event.title}</label>
-
-                <h4>Event Description:</h4>
-                <label>{event.description}</label>
-
-                <h4>Start Date:</h4>
-                <label>{event.startDate} {event.startTime}</label>
-
-                <h4>End Date:</h4>
-                <label>{event.endDate} {event.endTime}</label>
-
-                <h4>Tags:</h4>
-                {event.eventTags.map(tag =>
-                    <label>#{tag} </label>
-                    )}
-            </div>
+    const appElement = () => (
+        <div>
+            <Header />
+            <Outlet />
+            <Footer />
         </div>
     )
-}
 
-export default App;
+    let appPages = [
+        {
+            path: routes.root,
+            element: <StartPage />,
+        }
+    ]
+
+    if(isUserSignedIn){
+        appPages.push(
+            {
+                path: routes.events,
+                element: <AllEventsPage />,
+            },
+            {
+                path: `${routes.events}/:id`,
+                element: <SpecificEventPage />,
+                loader: eventLoader,
+            },
+            {
+                path: routes.ownEvents,
+                element: <OwnEventsPage />,
+            },
+            {
+                path: routes.calendar,
+                element: <CalendarPage />,
+            }
+        )
+    }
+
+    const router = createBrowserRouter([
+        {
+            path: routes.root,
+            element: appElement(),
+            errorElement: <ErrorPage />,
+            children: appPages
+        }
+    ]);
+
+    return <RouterProvider router={router} />
+}
