@@ -8,14 +8,25 @@ using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using EventOrganizer.Core.DTO;
+using EventOrganizer.Core.Commands.EventCommands;
+using EventOrganizer.Core.Commands;
+using EventOrganizer.EF.Triggers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<EventOrganazerDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<EventOrganazerDbContext>(options => {
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseTriggers(triggerOptions => {
+        triggerOptions.AddTrigger<BeforeEventAdding>();
+        triggerOptions.AddTrigger<BeforeEventUpdating>();
+    });
+});
 
 builder.Services.AddTransient<IQuery<GetEventListQueryParameters, IList<EventDTO>>, GetEventListQuery>();
 builder.Services.AddTransient<IQuery<GetEventByIdQueryParameters, EventDetailDTO>, GetEventByIdQuery>();
+builder.Services.AddTransient<ICommand<CreateEventCommandParameters, EventDetailDTO>, CreateEventCommand>();
+builder.Services.AddTransient<ICommand<UpdateEventCommandParameters, EventDetailDTO>, UpdateEventCommand>();
+builder.Services.AddTransient<ICommand<DeleteEventCommandParameters, VoidResult>, DeleteEventCommand>();
 
 builder.Services.AddTransient<IEventRepository, EventRepository>();
 
@@ -57,8 +68,6 @@ app.UseSwaggerUI(c =>
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
-app.UseCors();
 
 app.MapControllers();
 

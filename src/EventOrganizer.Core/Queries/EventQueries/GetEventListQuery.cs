@@ -28,6 +28,7 @@ namespace EventOrganizer.Core.Queries.EventQueries
                 //TO DO: add search by EventTags and title filter
                 .Skip(parameters.Skip)
                 .Take(parameters.Top)
+                .ToArray()
                 .Select(e => mapper.Map<EventDTO>(e))
                 .ToList();
 

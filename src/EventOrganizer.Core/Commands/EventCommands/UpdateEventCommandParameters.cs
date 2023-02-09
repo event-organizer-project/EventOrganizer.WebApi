@@ -2,7 +2,7 @@
 
 namespace EventOrganizer.Core.Commands.EventCommands
 {
-    public class CreateEventCommandParameters
+    public class UpdateEventCommandParameters
     {
         public EventDetailDTO EventDetailDTO { get; set; }
     }

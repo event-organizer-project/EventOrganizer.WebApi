@@ -1,4 +1,6 @@
-﻿using EventOrganizer.Core.DTO;
+﻿using EventOrganizer.Core.Commands;
+using EventOrganizer.Core.Commands.EventCommands;
+using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Queries;
 using EventOrganizer.Core.Queries.EventQueries;
 using Microsoft.AspNetCore.Mvc;
@@ -13,29 +15,43 @@ namespace EventOrganizer.WebApi.Controllers
     {
         private readonly IQuery<GetEventListQueryParameters, IList<EventDTO>> getEventListQuery;
         private readonly IQuery<GetEventByIdQueryParameters, EventDetailDTO> getEventByIdQuery;
+        private readonly ICommand<CreateEventCommandParameters, EventDetailDTO> createEventCommand;
+        private readonly ICommand<UpdateEventCommandParameters, EventDetailDTO> updateEventCommand;
+        private readonly ICommand<DeleteEventCommandParameters, VoidResult> deleteEventCommand;
 
         public EventController(
             IQuery<GetEventListQueryParameters, IList<EventDTO>> getEventListQuery,
-            IQuery<GetEventByIdQueryParameters, EventDetailDTO> getEventByIdQuery)
+            IQuery<GetEventByIdQueryParameters, EventDetailDTO> getEventByIdQuery,
+            ICommand<CreateEventCommandParameters, EventDetailDTO> createEventCommand,
+            ICommand<UpdateEventCommandParameters, EventDetailDTO> updateEventCommand,
+            ICommand<DeleteEventCommandParameters, VoidResult> deleteEventCommand)
         {
             this.getEventListQuery = getEventListQuery
                 ?? throw new ArgumentNullException(nameof(getEventListQuery));
             this.getEventByIdQuery = getEventByIdQuery
                 ?? throw new ArgumentNullException(nameof(getEventByIdQuery));
+            this.createEventCommand = createEventCommand
+                ?? throw new ArgumentNullException(nameof(createEventCommand));
+            this.updateEventCommand = updateEventCommand
+                ?? throw new ArgumentNullException(nameof(updateEventCommand));
+            this.deleteEventCommand = deleteEventCommand
+                ?? throw new ArgumentNullException(nameof(deleteEventCommand));
         }
 
         /// <summary>
         /// Returns a list of events according to the given criteria
         /// </summary>
         /// <param name="filter">Event filter</param>
+        /// <param name="top">Event top count</param>
+        /// <param name="skip">Event skip count</param>
         /// <returns>Event List</returns>
         [HttpGet]
-        public ActionResult<IList<EventDTO>> Get(string? filter = null)
+        public ActionResult<IList<EventDTO>> Get(string? filter = null, int top = 20, int skip = 0)
         {
             var result = getEventListQuery.Execute(new GetEventListQueryParameters { 
                 Filter = filter,
-                Top = 20,
-                Skip = 0
+                Top = top,
+                Skip = skip
             });
 
             return Ok(result);
@@ -67,7 +83,10 @@ namespace EventOrganizer.WebApi.Controllers
         [HttpPost]
         public ActionResult<EventDetailDTO> Post([FromBody] EventDetailDTO eventView)
         {
-            throw new NotImplementedException();
+            var result = createEventCommand.
+                Execute(new CreateEventCommandParameters { EventDetailDTO = eventView });
+
+            return Ok(result);
         }
 
         /// <summary>
@@ -82,7 +101,10 @@ namespace EventOrganizer.WebApi.Controllers
         [HttpPut]
         public ActionResult<EventDetailDTO> Put(EventDetailDTO eventView)
         {
-            throw new NotImplementedException();
+            var result = updateEventCommand.
+                Execute(new UpdateEventCommandParameters { EventDetailDTO = eventView });
+
+            return Ok(result);
         }
 
         /// <summary>
@@ -94,7 +116,9 @@ namespace EventOrganizer.WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            throw new NotImplementedException();
+            deleteEventCommand.Execute(new DeleteEventCommandParameters { EventId = id });
+
+            return Ok();
         }
     }
 }

@@ -1,31 +1,31 @@
 ﻿using AutoMapper;
 using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Repositories;
-using EventOrganizer.Domain.Models;
 
 namespace EventOrganizer.Core.Commands.EventCommands
 {
-    public class CreateEventCommand : ICommand<CreateEventCommandParameters, EventDetailDTO>
+    public class UpdateEventCommand : ICommand<UpdateEventCommandParameters, EventDetailDTO>
     {
         private readonly IEventRepository eventRepository;
 
         public readonly IMapper mapper;
 
-        public CreateEventCommand(IEventRepository eventRepository, IMapper mapper)
+        public UpdateEventCommand(IEventRepository eventRepository, IMapper mapper)
         {
             this.eventRepository = eventRepository
                 ?? throw new ArgumentNullException(nameof(eventRepository));
             this.mapper = mapper
                 ?? throw new ArgumentNullException(nameof(mapper));
         }
-
-        public EventDetailDTO Execute(CreateEventCommandParameters parameters)
+        public EventDetailDTO Execute(UpdateEventCommandParameters parameters)
         {
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
-            var eventModel = mapper.Map<EventModel>(parameters.EventDetailDTO);
+            var eventModel = eventRepository.Get(parameters.EventDetailDTO.Id);
 
-            var result = eventRepository.Create(eventModel);
+            eventModel = mapper.Map(parameters.EventDetailDTO, eventModel);
+
+            var result = eventRepository.Update(eventModel);
 
             return mapper.Map<EventDetailDTO>(result);
         }

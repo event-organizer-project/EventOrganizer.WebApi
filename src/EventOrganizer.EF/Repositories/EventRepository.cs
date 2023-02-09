@@ -9,7 +9,7 @@ namespace EventOrganizer.EF.Repositories
 
         public EventRepository(EventOrganazerDbContext eventOrganazerDbContext)
         {
-            dbContext = eventOrganazerDbContext;
+            dbContext = eventOrganazerDbContext ?? throw new ArgumentNullException(nameof(eventOrganazerDbContext));
         }
 
         public IEnumerable<EventModel> GetAll()
@@ -28,22 +28,31 @@ namespace EventOrganizer.EF.Repositories
         {
             dbContext.EventModels.Add(eventModel);
 
+            dbContext.SaveChanges();
+
             return eventModel;
         }
 
         public EventModel Update(EventModel eventModel)
         {
-            throw new NotImplementedException();
+            dbContext.Update(eventModel);
+
+            dbContext.SaveChanges();
+
+            return Get(eventModel.Id);
         }
 
         public void Delete(int id)
         {
             var eventModel = dbContext.EventModels.FirstOrDefault(x => x.Id == id);
 
+            // TO DO: chanhe logic
             if (eventModel == null)
                 throw new ArgumentException();
 
             dbContext.EventModels.Remove(eventModel);
+
+            dbContext.SaveChanges();
         }
     }
 }

@@ -1,10 +1,9 @@
-﻿using EventOrganizer.Core.Repositories;
-using EventOrganizer.Domain.Models;
-using System;
+﻿using EventOrganizer.Core.DTO;
+using EventOrganizer.Core.Repositories;
 
 namespace EventOrganizer.Core.Commands.EventCommands
 {
-    public class DeleteEventCommand : ICommand<DeleteEventCommandParameters, EventModel>
+    public class DeleteEventCommand : ICommand<DeleteEventCommandParameters, VoidResult>
     {
         private readonly IEventRepository eventRepository;
 
@@ -13,9 +12,14 @@ namespace EventOrganizer.Core.Commands.EventCommands
             this.eventRepository = eventRepository ?? throw new ArgumentNullException(nameof(eventRepository));
         }
 
-        public EventModel Execute(DeleteEventCommandParameters parameters)
+        public VoidResult Execute(DeleteEventCommandParameters parameters)
         {
-            throw new NotImplementedException();
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            eventRepository.Delete(parameters.EventId);
+
+            return new VoidResult();
         }
     }
 }
