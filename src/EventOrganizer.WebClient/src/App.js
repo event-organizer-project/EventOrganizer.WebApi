@@ -10,6 +10,7 @@ import CalendarPage from './components/CalendarPage/CalendarPage';
 import SpecificEventPage, {
     loader as eventLoader,
 } from './components/SpecificEventPage/SpecificEventPage';
+import LoadingIndicator from './components/LoadingIndicator/LoadingIndicator'
 import routes from './constants/route-constants';
 
 export default function App () {
@@ -21,6 +22,7 @@ export default function App () {
             <Header />
             <Outlet />
             <Footer />
+            <LoadingIndicator />
         </div>
     )
 
