@@ -3,6 +3,7 @@ using EventOrganizer.Core.Commands.EventCommands;
 using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Queries;
 using EventOrganizer.Core.Queries.EventQueries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
@@ -10,6 +11,7 @@ using System.Net;
 namespace EventOrganizer.WebApi.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class EventController : ControllerBase
     {

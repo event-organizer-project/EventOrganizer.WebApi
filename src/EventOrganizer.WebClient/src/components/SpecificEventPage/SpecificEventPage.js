@@ -1,16 +1,22 @@
-import { useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import eventRequestService from '../../services/eventRequestService'
 
-export async function loader({ params }) {
-    return fetch(`/api/event/${params.id}`)
-    .then(response => response.json())
-}
 
 export default function SpecificEventPage () {
 
-    const event = useLoaderData();
+    let { id } = useParams();
 
-    return (
-        <main>
+    const [ event, setEvent ] = useState({});
+
+    useEffect(() => {
+        console.log(id)
+        eventRequestService.get(id)
+            .then(result => setEvent(result));
+    }, [])
+
+    return event && ( 
+        <div>
             <h3>Specific event page</h3>
             <div>
                 <h4>Event Title:</h4>
@@ -30,6 +36,6 @@ export default function SpecificEventPage () {
                     <label key={tag}>#{tag} </label>
                     ) : null}
             </div>
-        </main>
+        </div>
     )
 }

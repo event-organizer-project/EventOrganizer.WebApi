@@ -57,6 +57,13 @@ builder.Services.AddHttpLogging(logging =>
     logging.ResponseBodyLogLimit = 4096;
 });
 
+builder.Services.AddAuthentication("Bearer")
+    .AddIdentityServerAuthentication("Bearer", options =>
+    {
+        options.ApiName = "eventorganizerapi";
+        options.Authority = builder.Configuration["Authority"];
+    });
+
 var app = builder.Build();
 
 app.UseSwagger();
@@ -67,6 +74,7 @@ app.UseSwaggerUI(c =>
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

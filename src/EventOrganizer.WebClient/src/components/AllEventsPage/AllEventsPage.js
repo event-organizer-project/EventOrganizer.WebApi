@@ -57,7 +57,7 @@ export default function AllEventsPage () {
     }
 
     return (
-        <main>
+        <div>
             <h5>There will be a page with an event search panel and tools for creating new events.</h5>
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 3, sm: 8, md: 12 }} pl={15} my='auto'
             height='70vh'>
@@ -68,10 +68,10 @@ export default function AllEventsPage () {
                 ))}
             </Grid>
             <ButtonGroup variant="text" aria-label="text button group" >
-                <Button onClick={previous} disabled={page.currentPage == 1}>&lt;</Button>
+                <Button onClick={previous} disabled={page.currentPage <= 1}>&lt;</Button>
                 <Button disabled>{page.currentPage} / {page.pageCount}</Button>
                 <Button onClick={next} disabled={page.currentPage == page.pageCount}>&gt;</Button>
             </ButtonGroup>
-        </main>
+        </div>
     )
 }

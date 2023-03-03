@@ -6,7 +6,7 @@ import routes from '../../constants/route-constants'
 
 export default function Header () {
 
-    const isUserSignedIn = useSelector((state) => state.auth.isUserSignedIn)
+    const isUserSignedIn = useSelector((state) => state.auth.user)
 
     return (
         <header>
