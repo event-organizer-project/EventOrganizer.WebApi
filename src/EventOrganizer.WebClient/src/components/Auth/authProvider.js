@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { storeUser, setAuthHeader, getUserSlice } from '../../store/authSlice'
+import { setAuthHeader } from '../../store/authSlice'
+import authService from 'services/authService'
 
 export default function AuthProvider({ userManager: manager, store, children }) {
 
@@ -9,7 +10,8 @@ export default function AuthProvider({ userManager: manager, store, children }) 
     userManager.current = manager
 
     const onUserLoaded = (user) => {
-      store.dispatch(storeUser(getUserSlice(user)))
+      authService.loadUserFromStorage(store);
+      //store.dispatch(storeUser(user))
     }
 
     const onUserUnloaded = () => {

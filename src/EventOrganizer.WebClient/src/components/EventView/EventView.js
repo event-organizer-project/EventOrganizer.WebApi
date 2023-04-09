@@ -9,8 +9,9 @@ export default function EventView ({ event }) {
         boxShadow: 1,
         borderRadius: 3,
         p: 1,
-        width: 300,
-        height: 120
+        maxWidth: 300,
+        height: 120,
+        margin: "auto"
     }
 
     const descriptionSX = {
@@ -26,7 +27,7 @@ export default function EventView ({ event }) {
             <Box sx={titleSX}>{event.title}</Box>
             <Box sx={descriptionSX}>{event.description}</Box>
             <EventTagList tags={event.eventTags} />
-            <Link to={`/${routes.events}/${event.id}`}>To event details</Link>
+            <Link to={`${routes.events}/${event.id}`}>To event details</Link>
         </Box>
     )
 }

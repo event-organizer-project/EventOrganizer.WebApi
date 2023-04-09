@@ -9,7 +9,8 @@ namespace EventOrganizer.EF.Repositories
 
         public EventRepository(EventOrganazerDbContext eventOrganazerDbContext)
         {
-            dbContext = eventOrganazerDbContext ?? throw new ArgumentNullException(nameof(eventOrganazerDbContext));
+            dbContext = eventOrganazerDbContext 
+                ?? throw new ArgumentNullException(nameof(eventOrganazerDbContext));
         }
 
         public IEnumerable<EventModel> GetAll()

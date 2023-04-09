@@ -29,7 +29,7 @@ namespace EventOrganizer.Core.MapperProfiles
                     opt => opt.MapFrom(src => TimeOnly.FromTimeSpan(src.StartTime)))
                 .ForMember(
                     dest => dest.EndTime,
-                    opt => opt.MapFrom(src => TimeOnly.FromTimeSpan(src.StartTime)))
+                    opt => opt.MapFrom(src => TimeOnly.FromTimeSpan(src.EndTime)))
                 .ForMember(
                     dest => dest.EventTags,
                     opt => opt.MapFrom(src => src.EventTags.Select(t => t.Keyword)));
@@ -51,7 +51,7 @@ namespace EventOrganizer.Core.MapperProfiles
                     opt => opt.MapFrom(src => TimeOnly.FromTimeSpan(src.StartTime)))
                 .ForMember(
                     dest => dest.EndTime,
-                    opt => opt.MapFrom(src => TimeOnly.FromTimeSpan(src.StartTime)))
+                    opt => opt.MapFrom(src => TimeOnly.FromTimeSpan(src.EndTime)))
                 .ForMember(
                     dest => dest.EventTags,
                     opt => opt.MapFrom(src => src.EventTags.Select(t => t.Keyword)));
@@ -73,8 +73,7 @@ namespace EventOrganizer.Core.MapperProfiles
                     opt => opt.MapFrom(src => src.StartTime.ToTimeSpan()))
                 .ForMember(
                     dest => dest.EndTime,
-                    opt => opt.MapFrom(src => src.StartTime.ToTimeSpan()))
-
+                    opt => opt.MapFrom(src => src.EndTime.ToTimeSpan()))
                 .ForMember(
                     dest => dest.TagToEvents,
                     opt => opt.MapFrom((src, dest) => src.EventTags

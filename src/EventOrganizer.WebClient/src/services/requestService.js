@@ -44,13 +44,14 @@ export default class RequestService {
     }
 
     post(payload) {
-        axios
+        store.dispatch(startLoading());
+
+        return axios
             .post(this.resourceName, payload)
             .then(response => {
                 return response.data
             })
             .catch(error => {
-                console.log('Error:', error);
                 store.dispatch(setError(error.response.statusText));
                 return null;
             })
@@ -60,7 +61,9 @@ export default class RequestService {
     }
 
     put(payload) {
-        axios
+        store.dispatch(startLoading());
+
+        return axios
             .put(this.resourceName, payload)
             .then(response => {
                 return response.data
@@ -76,7 +79,9 @@ export default class RequestService {
     }
 
     delete(id) {
-        axios
+        store.dispatch(startLoading());
+
+        return axios
             .delete(`${this.resourceName}/${id}`)
             .then(response => {
                 return response.data

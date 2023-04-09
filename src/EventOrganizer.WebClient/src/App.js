@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import store from './store/store';
-import userManager, { loadUserFromStorage } from './services/userService'
+import authService from './services/authService'
 import routes from './constants/route-constants';
 
 import AuthProvider from './components/Auth/authProvider'
@@ -21,29 +23,31 @@ import LoadingIndicator from './components/LoadingIndicator/LoadingIndicator';
 export default function App() {
 
   useEffect(() => {
-    loadUserFromStorage(store)
+    authService.loadUserFromStorage(store)
   }, [])
 
   return (
-    <Provider store={store}>
-      <AuthProvider userManager={userManager} store={store}>
-        <Router>
-          <Header />
-          <main>
-            <Switch>
-              <Route path={routes.signin} component={SigninOidc} />
-              <Route path={routes.signout} component={SignoutOidc} />
-              <Route exact path={routes.root} component={StartPage} />
-              <PrivateRoute path={`${routes.events}/:id`} component={SpecificEventPage} />
-              <PrivateRoute path={routes.events} component={AllEventsPage} />
-              <PrivateRoute path={routes.ownEvents} component={OwnEventsPage} />
-              <PrivateRoute path={routes.calendar} component={CalendarPage} />
-            </Switch>
-          </main>
-          <Footer />
-          <LoadingIndicator />
-        </Router>
-      </AuthProvider>
-    </Provider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Provider store={store}>
+        <AuthProvider userManager={authService.getUserManager()} store={store}>
+          <Router>
+            <Header />
+            <main>
+              <Switch>
+                <Route path={routes.signin} component={SigninOidc} />
+                <Route path={routes.signout} component={SignoutOidc} />
+                <Route exact path={routes.root} component={StartPage} />
+                <PrivateRoute path={`${routes.events}/:id`} component={SpecificEventPage} />
+                <PrivateRoute path={routes.events} component={AllEventsPage} />
+                <PrivateRoute path={routes.ownEvents} component={OwnEventsPage} />
+                <PrivateRoute path={routes.calendar} component={CalendarPage} />
+              </Switch>
+            </main>
+            <Footer />
+            <LoadingIndicator />
+          </Router>
+        </AuthProvider>
+      </Provider>
+    </LocalizationProvider>
   )
 }

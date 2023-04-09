@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
-import { signinRedirectCallback } from '../../services/userService'
+import authService from 'services/authService'
 import { useHistory } from 'react-router-dom'
 
 function SigninOidc() {
   const history = useHistory()
   useEffect(() => {
     async function signinAsync() {
-      await signinRedirectCallback()
+      await authService.signinRedirectCallback()
       history.push('/')
     }
     signinAsync()

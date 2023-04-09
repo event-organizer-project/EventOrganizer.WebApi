@@ -10,10 +10,10 @@ const authSlice = createSlice({
     initialState: initialState,
     reducers: {
         storeUser(state, action) {
-            setAuthHeader(action.payload.access_token);
             state.user = action.payload;
         },
         storeUserError(state) {
+            console.log("error")
             state.user = null;
         },
         userExpired(state) {
@@ -27,14 +27,6 @@ const authSlice = createSlice({
 
 export function setAuthHeader(token) {
     axios.defaults.headers.common['Authorization'] = token ? 'Bearer ' + token : ''
-}
-
-export function getUserSlice(payload) {
-    return {
-        name: payload.profile.name,
-        scopes: payload.scope.split(' '),
-        access_token: payload.access_token
-    }
 }
 
 export const { storeUser, storeUserError, userExpired, userSignedOut } = authSlice.actions

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Grid, ButtonGroup, Button } from '@mui/material'
+import { Box, Grid, ButtonGroup, Button } from '@mui/material'
 import EventView from '../EventView/EventView'
 import eventRequestService from '../../services/eventRequestService'
 
@@ -57,10 +57,9 @@ export default function AllEventsPage () {
     }
 
     return (
-        <div>
+        <Box>
             <h5>There will be a page with an event search panel and tools for creating new events.</h5>
-            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 3, sm: 8, md: 12 }} pl={15} my='auto'
-            height='70vh'>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 3, sm: 8, md: 12 }} style={{ width: '95vw', height: '70vh'}}>
                 {page.items.map(event => (
                     <Grid item xs={2} sm={4} md={4} key={event.id}>
                         <EventView event={event} />
@@ -72,6 +71,6 @@ export default function AllEventsPage () {
                 <Button disabled>{page.currentPage} / {page.pageCount}</Button>
                 <Button onClick={next} disabled={page.currentPage == page.pageCount}>&gt;</Button>
             </ButtonGroup>
-        </div>
+        </Box>
     )
 }

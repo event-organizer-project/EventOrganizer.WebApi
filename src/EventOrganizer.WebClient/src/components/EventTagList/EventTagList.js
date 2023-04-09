@@ -1,19 +1,13 @@
-import { Box } from '@mui/material'
+import { Stack } from '@mui/material'
+import EventTag from './EventTag'
 
-export default function EventTagList ({ tags }) {
+export default function EventTagList ({ tags, onClick, onDelete }) {
 
     return tags && (
-        <Box sx={{ display: 'flex' }}>
+        <Stack direction="row" sx={{ flexWrap: 'wrap' }}>
             {tags.map(tag => (
-                <Box key={tag} sx={{
-                    borderRadius: 1,
-                    backgroundColor: '#80808066',
-                    mx: 0.5,
-                    px: 0.5
-                  }}>
-                    #{ tag }
-                </Box>
+                <EventTag key={tag} tag={tag} onClick={onClick} onDelete={onDelete} />
             ))}
-        </Box>
+        </Stack>
     )
 }
