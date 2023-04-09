@@ -11,6 +11,9 @@ using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Commands.EventCommands;
 using EventOrganizer.Core.Commands;
 using EventOrganizer.EF.Triggers;
+using EventOrganizer.WebApi.Services;
+using EventOrganizer.Core.Services;
+using EventOrganizer.Core.Queries.UserQueries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,9 +31,17 @@ builder.Services.AddTransient<ICommand<CreateEventCommandParameters, EventDetail
 builder.Services.AddTransient<ICommand<UpdateEventCommandParameters, EventDetailDTO>, UpdateEventCommand>();
 builder.Services.AddTransient<ICommand<DeleteEventCommandParameters, VoidResult>, DeleteEventCommand>();
 
+builder.Services.AddTransient<IQuery<GetCurrentUserQueryParameters, UserDTO>, GetCurrentUserQuery>();
+
 builder.Services.AddTransient<IEventRepository, EventRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IUserContextAccessor, UserContextAccessor>();
+
+builder.Services.AddTransient<IUserHandler, UserHandler>();
 
 builder.Services.AddControllers();
 
