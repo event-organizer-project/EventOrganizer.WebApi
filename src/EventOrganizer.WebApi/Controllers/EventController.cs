@@ -20,13 +20,15 @@ namespace EventOrganizer.WebApi.Controllers
         private readonly ICommand<CreateEventCommandParameters, EventDetailDTO> createEventCommand;
         private readonly ICommand<UpdateEventCommandParameters, EventDetailDTO> updateEventCommand;
         private readonly ICommand<DeleteEventCommandParameters, VoidResult> deleteEventCommand;
+        private readonly ICommand<ScheduleEventCommandParameters, EventDetailDTO> joinEventCommand;
 
         public EventController(
             IQuery<GetEventListQueryParameters, IList<EventDTO>> getEventListQuery,
             IQuery<GetEventByIdQueryParameters, EventDetailDTO> getEventByIdQuery,
             ICommand<CreateEventCommandParameters, EventDetailDTO> createEventCommand,
             ICommand<UpdateEventCommandParameters, EventDetailDTO> updateEventCommand,
-            ICommand<DeleteEventCommandParameters, VoidResult> deleteEventCommand)
+            ICommand<DeleteEventCommandParameters, VoidResult> deleteEventCommand,
+            ICommand<ScheduleEventCommandParameters, EventDetailDTO> joinEventCommand)
         {
             this.getEventListQuery = getEventListQuery
                 ?? throw new ArgumentNullException(nameof(getEventListQuery));
@@ -38,6 +40,8 @@ namespace EventOrganizer.WebApi.Controllers
                 ?? throw new ArgumentNullException(nameof(updateEventCommand));
             this.deleteEventCommand = deleteEventCommand
                 ?? throw new ArgumentNullException(nameof(deleteEventCommand));
+            this.joinEventCommand = joinEventCommand
+                ?? throw new ArgumentNullException(nameof(joinEventCommand));
         }
 
         /// <summary>
@@ -121,6 +125,26 @@ namespace EventOrganizer.WebApi.Controllers
             deleteEventCommand.Execute(new DeleteEventCommandParameters { EventId = id });
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Schedule or unschedule some event by id
+        /// </summary>
+        /// <param name="id">Event identifier</param>
+        /// <param name="isScheduled">Event schedule option</param>
+        /// <returns>Event</returns>
+        [SwaggerResponse((int)HttpStatusCode.OK)]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        [HttpGet("schedule/{id}/{isScheduled}")]
+        public ActionResult<EventDetailDTO> Schedule(int id, bool isScheduled)
+        {
+            var result = joinEventCommand.Execute(new ScheduleEventCommandParameters 
+            { 
+                EventId = id,
+                IsEventScheduled = isScheduled
+            });
+
+            return Ok(result);
         }
     }
 }

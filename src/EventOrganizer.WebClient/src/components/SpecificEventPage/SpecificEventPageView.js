@@ -1,20 +1,25 @@
-import { useSelector } from 'react-redux'
-import { Box, Grid, Typography, Button } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EventTagList from 'components/EventTagList/EventTagList'
 import UserView from 'components/UserView/UserView'
+import UserViewList from 'components/UserViewList/UserViewList'
+import EventOptionsMenu from './EventOptionsMenu'
 import { mapEnumToString } from 'mappers/recurrence-type-mapper'
 
-export default function SpecificEventPageView({ event, toUpdateMode }) {
-
-    const user = useSelector((state) => state.auth.user)
+export default function SpecificEventPageView({ event, setEvent, toUpdateMode }) {
 
     return event && (
         <Box>
-            <Typography variant="h5" gutterBottom>
-                {event.title} 
-                {event.owner.id == user.id && <Button onClick={toUpdateMode}>Update</Button>}
-            </Typography>
+            <Box display='flex'>
+                <Typography variant='h5' gutterBottom padding='6px 2px'>
+                    {event.title}
+                </Typography>
+                <EventOptionsMenu
+                    toUpdateEvent={toUpdateMode}
+                    event={event}
+                    setEvent={setEvent}
+                />
+            </Box>
             <Grid container spacing={2} width='100vw'>
                 <Grid item xs={12} sm={5} width='100%' >
 
@@ -36,8 +41,12 @@ export default function SpecificEventPageView({ event, toUpdateMode }) {
                 </Grid>
 
                 <Grid item xs={12} sm={5}>
+                    <Typography variant="h6" gutterBottom>
+                        Members:
+                    </Typography>
+                    <UserViewList users={event.members} />
                 </Grid>
-            
+
             </Grid>
         </Box>
     )

@@ -30,6 +30,8 @@ builder.Services.AddTransient<IQuery<GetEventByIdQueryParameters, EventDetailDTO
 builder.Services.AddTransient<ICommand<CreateEventCommandParameters, EventDetailDTO>, CreateEventCommand>();
 builder.Services.AddTransient<ICommand<UpdateEventCommandParameters, EventDetailDTO>, UpdateEventCommand>();
 builder.Services.AddTransient<ICommand<DeleteEventCommandParameters, VoidResult>, DeleteEventCommand>();
+builder.Services.AddTransient<ICommand<ScheduleEventCommandParameters, EventDetailDTO>, ScheduleEventCommand>();
+
 
 builder.Services.AddTransient<IQuery<GetCurrentUserQueryParameters, UserDTO>, GetCurrentUserQuery>();
 
