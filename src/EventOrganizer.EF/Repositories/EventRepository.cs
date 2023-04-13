@@ -1,5 +1,6 @@
 ﻿using EventOrganizer.Core.Repositories;
 using EventOrganizer.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventOrganizer.EF.Repositories
 {
@@ -15,12 +16,16 @@ namespace EventOrganizer.EF.Repositories
 
         public IEnumerable<EventModel> GetAll()
         {
-            return dbContext.EventModels;
+            return dbContext.EventModels
+                .Include(e => e.Owner)
+                .Include(e => e.Members)
+                .Include(e => e.EventTags)
+                .Include(e => e.EventResults);
         }
 
         public EventModel Get(int id)
         {
-            var model = dbContext.EventModels.FirstOrDefault(x => x.Id == id);
+            var model = GetAll().FirstOrDefault(x => x.Id == id);
 
             return model;
         }

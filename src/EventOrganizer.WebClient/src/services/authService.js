@@ -9,7 +9,7 @@ export class AuthService {
     client_id: "eventorganizer",
     redirect_uri: "https://localhost:3000/signin-oidc",
     response_type: "id_token token",
-    scope: "openid profile eventorganizerapi user_data",
+    scope: "openid profile eventorganizerapi",
     post_logout_redirect_uri: "https://localhost:3000/signout-oidc",
     automaticSilentRenew: true,
     loadUserInfo: true

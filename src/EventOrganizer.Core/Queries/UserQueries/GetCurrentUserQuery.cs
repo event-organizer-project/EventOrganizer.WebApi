@@ -4,7 +4,7 @@ using EventOrganizer.Core.Services;
 
 namespace EventOrganizer.Core.Queries.UserQueries
 {
-    public class GetCurrentUserQuery : IQuery<GetCurrentUserQueryParameters, UserDTO>
+    public class GetCurrentUserQuery : IQuery<VoidParameters, UserDTO>
     {
         private readonly IUserHandler userHandler;
 
@@ -18,7 +18,7 @@ namespace EventOrganizer.Core.Queries.UserQueries
                 ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public UserDTO Execute(GetCurrentUserQueryParameters parameters)
+        public UserDTO Execute(VoidParameters parameters)
         {
             var user = userHandler.GetCurrentUser();
 

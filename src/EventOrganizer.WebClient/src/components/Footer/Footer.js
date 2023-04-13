@@ -1,9 +1,9 @@
 export default function Footer () {
     return (
         <footer>
-            <label>footer information</label>
-            <label>contacts</label>
-            <label>additional information</label>
+            <label>Midle Mastery Project</label>
+            <h4>Event Organizer</h4>
+            <label>By Mikita Yurtsevich</label>
         </footer>
     )
 }

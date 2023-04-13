@@ -167,8 +167,8 @@ export default function EventUpsertForm({ event, submitAction, cancelAction }) {
                         />
                     )} />
                 <FormGroup sx={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: '2vh' }}>
-                    <Button type='submit' variant='contained' color='success'>Submit</Button>
                     <Button variant='contained' color='primary' onClick={cancelAction}>Cancel</Button>
+                    <Button type='submit' variant='contained' color='success'>Submit</Button>
                 </FormGroup>
             </form>
         </div>

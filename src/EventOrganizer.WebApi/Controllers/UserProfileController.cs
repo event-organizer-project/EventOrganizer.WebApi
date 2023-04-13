@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
-using EventOrganizer.Core.Queries.UserQueries;
 using EventOrganizer.Core.Queries;
 using Microsoft.AspNetCore.Authorization;
 
@@ -13,9 +12,9 @@ namespace EventOrganizer.WebApi.Controllers
     [ApiController]
     public class UserProfileController : ControllerBase
     {
-        private readonly IQuery<GetCurrentUserQueryParameters, UserDTO> getCurrentUserQuery;
+        private readonly IQuery<VoidParameters, UserDTO> getCurrentUserQuery;
 
-        public UserProfileController(IQuery<GetCurrentUserQueryParameters, UserDTO> getCurrentUserQuery)
+        public UserProfileController(IQuery<VoidParameters, UserDTO> getCurrentUserQuery)
         {
             this.getCurrentUserQuery = getCurrentUserQuery
                 ?? throw new ArgumentNullException(nameof(getCurrentUserQuery));
@@ -29,7 +28,7 @@ namespace EventOrganizer.WebApi.Controllers
         [HttpGet("current")]
         public ActionResult<UserDTO> Get()
         {
-            var result = getCurrentUserQuery.Execute(new GetCurrentUserQueryParameters());
+            var result = getCurrentUserQuery.Execute(new VoidParameters());
 
             return Ok(result);
         }

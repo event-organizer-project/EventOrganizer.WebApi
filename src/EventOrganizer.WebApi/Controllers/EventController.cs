@@ -21,6 +21,7 @@ namespace EventOrganizer.WebApi.Controllers
         private readonly ICommand<UpdateEventCommandParameters, EventDetailDTO> updateEventCommand;
         private readonly ICommand<DeleteEventCommandParameters, VoidResult> deleteEventCommand;
         private readonly ICommand<ScheduleEventCommandParameters, EventDetailDTO> joinEventCommand;
+        private readonly IQuery<VoidParameters, UserOwnEventsDTO> getCurrentUserOwnEventsQuery;
 
         public EventController(
             IQuery<GetEventListQueryParameters, IList<EventDTO>> getEventListQuery,
@@ -28,7 +29,8 @@ namespace EventOrganizer.WebApi.Controllers
             ICommand<CreateEventCommandParameters, EventDetailDTO> createEventCommand,
             ICommand<UpdateEventCommandParameters, EventDetailDTO> updateEventCommand,
             ICommand<DeleteEventCommandParameters, VoidResult> deleteEventCommand,
-            ICommand<ScheduleEventCommandParameters, EventDetailDTO> joinEventCommand)
+            ICommand<ScheduleEventCommandParameters, EventDetailDTO> joinEventCommand,
+            IQuery<VoidParameters, UserOwnEventsDTO> getCurrentUserOwnEventsQuery)
         {
             this.getEventListQuery = getEventListQuery
                 ?? throw new ArgumentNullException(nameof(getEventListQuery));
@@ -42,6 +44,8 @@ namespace EventOrganizer.WebApi.Controllers
                 ?? throw new ArgumentNullException(nameof(deleteEventCommand));
             this.joinEventCommand = joinEventCommand
                 ?? throw new ArgumentNullException(nameof(joinEventCommand));
+            this.getCurrentUserOwnEventsQuery = getCurrentUserOwnEventsQuery
+                ?? throw new ArgumentNullException(nameof(getCurrentUserOwnEventsQuery));
         }
 
         /// <summary>
@@ -143,6 +147,20 @@ namespace EventOrganizer.WebApi.Controllers
                 EventId = id,
                 IsEventScheduled = isScheduled
             });
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Schedule or unschedule some event by id
+        /// </summary>
+        /// <returns>Events</returns>
+        [SwaggerResponse((int)HttpStatusCode.OK)]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        [HttpGet("own-events")]
+        public ActionResult<UserOwnEventsDTO> GetUserOwnEvents()
+        {
+            var result = getCurrentUserOwnEventsQuery.Execute(new VoidParameters());
 
             return Ok(result);
         }

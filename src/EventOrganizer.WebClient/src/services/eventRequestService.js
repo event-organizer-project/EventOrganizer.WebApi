@@ -25,6 +25,23 @@ export class EventRequestService extends RequestService {
                 store.dispatch(finishLoading());
             });
     }
+
+    getOwnEvents = () => {
+        store.dispatch(startLoading());
+        
+        return axios
+            .get(`${this.resourceName}/own-events`)
+            .then(response => {
+                return response.data;
+            })
+            .catch(error => {
+                console.log('Error:', error);
+                store.dispatch(setError(error.response.statusText));
+            })
+            .finally(() => {
+                store.dispatch(finishLoading());
+            });
+    }
 }
 
 const eventRequestService = new EventRequestService();
