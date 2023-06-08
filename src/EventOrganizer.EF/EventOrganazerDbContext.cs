@@ -22,7 +22,7 @@ namespace EventOrganizer.EF
 
         public DbSet<TagToEvent> TagToEvents { get; set; }
 
-        public EventOrganazerDbContext(DbContextOptions<EventOrganazerDbContext> options)
+        public EventOrganazerDbContext(DbContextOptions options)
             : base(options)
         { }
 

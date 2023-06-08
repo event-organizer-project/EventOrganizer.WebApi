@@ -1,60 +1,69 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using MySql.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace EventOrganizer.EF.Migrations
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace EventOrganizer.EF.MySql.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySQL:Charset", "utf8mb4");
+
             migrationBuilder.CreateTable(
                 name: "EventTags",
                 columns: table => new
                 {
-                    Keyword = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                    Keyword = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EventTags", x => x.Keyword);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    FirstName = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    LastName = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    Nickname = table.Column<string>(type: "longtext", nullable: false),
+                    Email = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "EventModels",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    StartTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
+                    EndTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
                     RecurrenceType = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     OwnerId = table.Column<int>(type: "int", nullable: true),
-                    IsMessagingAllowed = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MeetingLink = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    IsMessagingAllowed = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    Discriminator = table.Column<string>(type: "longtext", nullable: false),
+                    Location = table.Column<string>(type: "longtext", nullable: true),
+                    MeetingLink = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -64,16 +73,17 @@ namespace EventOrganizer.EF.Migrations
                         column: x => x.OwnerId,
                         principalTable: "Users",
                         principalColumn: "Id");
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "DialogueMessages",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Text = table.Column<string>(type: "longtext", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     SenderId = table.Column<int>(type: "int", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -92,7 +102,8 @@ namespace EventOrganizer.EF.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "EventInvolvement",
@@ -100,8 +111,8 @@ namespace EventOrganizer.EF.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false),
-                    JoiningDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    LeavingDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    JoiningDate = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP(6)"),
+                    LeavingDate = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -118,16 +129,17 @@ namespace EventOrganizer.EF.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "EventResults",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(type: "longtext", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -139,14 +151,15 @@ namespace EventOrganizer.EF.Migrations
                         principalTable: "EventModels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "TagToEvent",
                 columns: table => new
                 {
                     EventId = table.Column<int>(type: "int", nullable: false),
-                    Keyword = table.Column<string>(type: "nvarchar(30)", nullable: false)
+                    Keyword = table.Column<string>(type: "varchar(30)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -163,6 +176,40 @@ namespace EventOrganizer.EF.Migrations
                         principalTable: "EventTags",
                         principalColumn: "Keyword",
                         onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "EventModels",
+                columns: new[] { "Id", "Description", "Discriminator", "EndDate", "EndTime", "MeetingLink", "OwnerId", "StartDate", "StartTime", "Title" },
+                values: new object[] { 1, "Mastery completion and presentation of the final product", "OnlineEvent", new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 20, 0, 0, 0), null, null, new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 18, 0, 0, 0), "Event organizer presentation" });
+
+            migrationBuilder.InsertData(
+                table: "EventTags",
+                column: "Keyword",
+                values: new object[]
+                {
+                    "entertainment",
+                    "godel",
+                    "online"
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Email", "FirstName", "LastName", "Nickname" },
+                values: new object[,]
+                {
+                    { 1, "mikita.n@godeltech.com", "Mikita", "N", "mikita.n" },
+                    { 2, "john.doe@gmail.com", "John", "Doe", "john.doe" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TagToEvent",
+                columns: new[] { "EventId", "Keyword" },
+                values: new object[,]
+                {
+                    { 1, "godel" },
+                    { 1, "online" }
                 });
 
             migrationBuilder.CreateIndex(

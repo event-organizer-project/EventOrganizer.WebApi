@@ -14,11 +14,12 @@ using EventOrganizer.EF.Triggers;
 using EventOrganizer.WebApi.Services;
 using EventOrganizer.Core.Services;
 using EventOrganizer.Core.Queries.UserQueries;
+using EventOrganizer.EF.MySql;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<EventOrganazerDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddDbContext<EventOrganazerMySqlDbContext>(options => {
+    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.UseTriggers(triggerOptions => {
         triggerOptions.AddTrigger<BeforeEventAdding>();
         triggerOptions.AddTrigger<BeforeEventUpdating>();
@@ -34,6 +35,8 @@ builder.Services.AddTransient<ICommand<ScheduleEventCommandParameters, EventDeta
 
 
 builder.Services.AddTransient<IQuery<GetCurrentUserQueryParameters, UserDTO>, GetCurrentUserQuery>();
+
+builder.Services.AddTransient<EventOrganazerDbContext, EventOrganazerMySqlDbContext>();
 
 builder.Services.AddTransient<IEventRepository, EventRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
@@ -78,6 +81,15 @@ builder.Services.AddAuthentication("Bearer")
     });
 
 var app = builder.Build();
+
+// Set up automatic database migration
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<EventOrganazerMySqlDbContext>();
+
+    dbContext.Database.Migrate();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
