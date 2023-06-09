@@ -8,6 +8,8 @@
 
         public string LastName { get; set; }
 
+        public string Nickname { get; set; }
+
         public string Email { get; set; }
 
         public virtual ICollection<EventModel> CreatedEvents { get; set; }

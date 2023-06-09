@@ -22,7 +22,7 @@ namespace EventOrganizer.EF
 
         public DbSet<TagToEvent> TagToEvents { get; set; }
 
-        public EventOrganazerDbContext(DbContextOptions<EventOrganazerDbContext> options)
+        public EventOrganazerDbContext(DbContextOptions options)
             : base(options)
         { }
 
@@ -30,12 +30,6 @@ namespace EventOrganizer.EF
         {
             //optionsBuilder
             //    .UseLazyLoadingProxies();
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            var thisAssembly = Assembly.GetExecutingAssembly();
-            modelBuilder.ApplyConfigurationsFromAssembly(thisAssembly);
         }
     }
 }

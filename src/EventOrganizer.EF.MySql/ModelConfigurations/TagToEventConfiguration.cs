@@ -2,13 +2,12 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-namespace EventOrganizer.EF.ModelConfigurations
+namespace EventOrganizer.EF.MySql.ModelConfigurations
 {
-    public class TagToEventConfiguration : IEntityTypeConfiguration<TagToEvent>
+    internal class TagToEventConfiguration : IEntityTypeConfiguration<TagToEvent>
     {
         public void Configure(EntityTypeBuilder<TagToEvent> builder)
         {
-            /*
             builder
                 .HasOne(tte => tte.EventModel)
                 .WithMany(em => em.TagToEvents)
@@ -27,7 +26,7 @@ namespace EventOrganizer.EF.ModelConfigurations
             builder.HasData(
                 new TagToEvent { Keyword = "godel", EventId = 1 },
                 new TagToEvent { Keyword = "online", EventId = 1 }
-                );*/
+                );
         }
     }
 }

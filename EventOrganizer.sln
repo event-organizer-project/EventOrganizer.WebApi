@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventOrganizer.WebApi", "sr
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "EventOrganizer.WebClient", "src\EventOrganizer.WebClient\EventOrganizer.WebClient.esproj", "{A3A5AAE9-834D-4C27-8F2F-6C093A9EFCD1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventOrganizer.EF.MySql", "src\EventOrganizer.EF.MySql\EventOrganizer.EF.MySql.csproj", "{8B201BA5-668C-42A2-9B0D-E83038ECF282}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{A3A5AAE9-834D-4C27-8F2F-6C093A9EFCD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3A5AAE9-834D-4C27-8F2F-6C093A9EFCD1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A3A5AAE9-834D-4C27-8F2F-6C093A9EFCD1}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{8B201BA5-668C-42A2-9B0D-E83038ECF282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B201BA5-668C-42A2-9B0D-E83038ECF282}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B201BA5-668C-42A2-9B0D-E83038ECF282}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B201BA5-668C-42A2-9B0D-E83038ECF282}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{45021362-1DD9-41F8-BD49-CB8A505DB6C4} = {21935568-F6C5-42EF-86DA-B5A8133C195E}
 		{EE9E7A81-2F0F-4CBB-AAF7-5191247FFB2A} = {21935568-F6C5-42EF-86DA-B5A8133C195E}
 		{A3A5AAE9-834D-4C27-8F2F-6C093A9EFCD1} = {21935568-F6C5-42EF-86DA-B5A8133C195E}
+		{8B201BA5-668C-42A2-9B0D-E83038ECF282} = {21935568-F6C5-42EF-86DA-B5A8133C195E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A7BED18D-A972-485B-92B1-953A63DAA9CB}
