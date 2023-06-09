@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventOrganizer.EF.ModelConfigurations
 {
-    internal class TagToEventConfiguration : IEntityTypeConfiguration<TagToEvent>
+    public class TagToEventConfiguration : IEntityTypeConfiguration<TagToEvent>
     {
         public void Configure(EntityTypeBuilder<TagToEvent> builder)
         {

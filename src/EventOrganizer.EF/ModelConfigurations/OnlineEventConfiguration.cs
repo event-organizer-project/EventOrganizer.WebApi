@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventOrganizer.EF.ModelConfigurations
 {
-    internal class OnlineEventConfiguration : IEntityTypeConfiguration<OnlineEvent>
+    public class OnlineEventConfiguration : IEntityTypeConfiguration<OnlineEvent>
     {
         public void Configure(EntityTypeBuilder<OnlineEvent> builder)
         {

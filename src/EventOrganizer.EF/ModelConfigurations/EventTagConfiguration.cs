@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EventOrganizer.EF.EntityConfigurations
 {
-    internal class EventTagConfiguration : IEntityTypeConfiguration<EventTag>
+    public class EventTagConfiguration : IEntityTypeConfiguration<EventTag>
     {
         public void Configure(EntityTypeBuilder<EventTag> builder)
         {

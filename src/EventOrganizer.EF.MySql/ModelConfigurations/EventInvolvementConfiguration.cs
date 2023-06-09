@@ -1,14 +1,14 @@
 ﻿using EventOrganizer.Domain.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
 
-namespace EventOrganizer.EF.EntityConfigurations
+namespace EventOrganizer.EF.MySql.ModelConfigurations
 {
     public class EventInvolvementConfiguration : IEntityTypeConfiguration<EventInvolvement>
     {
         public void Configure(EntityTypeBuilder<EventInvolvement> builder)
         {
-            builder.Property(ei => ei.JoiningDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.Property(ei => ei.JoiningDate).HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
 
             builder
                 .HasOne(ei => ei.EventModel)
