@@ -80,6 +80,17 @@ builder.Services.AddAuthentication("Bearer")
         options.Authority = builder.Configuration["Authority"];
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins(builder.Configuration.GetValue<string>("AllowedOrigins:WebClient"))
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // Set up automatic database migration
@@ -97,6 +108,13 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Event Organizer V1");
 });
 
+// TO DO: Remove this section after configuring ForwardedHeaders 
+app.Use((context, next) =>
+{
+    context.Request.Scheme = "https";
+    return next(context);
+});
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -105,5 +123,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseHttpLogging();
+
+app.UseCors();
 
 app.Run();
