@@ -27,13 +27,14 @@ builder.Services.AddDbContext<EventOrganazerDbContext>(options => {
 
 builder.Services.AddTransient<IQuery<GetEventListQueryParameters, IList<EventDTO>>, GetEventListQuery>();
 builder.Services.AddTransient<IQuery<GetEventByIdQueryParameters, EventDetailDTO>, GetEventByIdQuery>();
+builder.Services.AddTransient<IQuery<VoidParameters, UserOwnEventsDTO>, GetCurrentUserOwnEventsQuery>();
 builder.Services.AddTransient<ICommand<CreateEventCommandParameters, EventDetailDTO>, CreateEventCommand>();
 builder.Services.AddTransient<ICommand<UpdateEventCommandParameters, EventDetailDTO>, UpdateEventCommand>();
 builder.Services.AddTransient<ICommand<DeleteEventCommandParameters, VoidResult>, DeleteEventCommand>();
 builder.Services.AddTransient<ICommand<ScheduleEventCommandParameters, EventDetailDTO>, ScheduleEventCommand>();
 
 
-builder.Services.AddTransient<IQuery<GetCurrentUserQueryParameters, UserDTO>, GetCurrentUserQuery>();
+builder.Services.AddTransient<IQuery<VoidParameters, UserDTO>, GetCurrentUserQuery>();
 
 builder.Services.AddTransient<IEventRepository, EventRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();

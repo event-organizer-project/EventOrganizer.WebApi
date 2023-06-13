@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Box } from '@mui/material'
+import { Box, Card, CardActionArea } from '@mui/material'
 import EventTagList from '../EventTagList/EventTagList'
 import routes from '../../constants/route-constants'
 
@@ -23,11 +23,13 @@ export default function EventView ({ event }) {
     const titleSX = { fontWeight: 'bold' }
 
     return (
-        <Box sx={eventViewSX}>
+        <Card sx={eventViewSX}>
+            <CardActionArea href={`${routes.events}/${event.id}`}>
             <Box sx={titleSX}>{event.title}</Box>
             <Box sx={descriptionSX}>{event.description}</Box>
             <EventTagList tags={event.eventTags} />
+            </CardActionArea>
             <Link to={`${routes.events}/${event.id}`}>To event details</Link>
-        </Box>
+        </Card>
     )
 }

@@ -22,7 +22,7 @@ namespace EventOrganizer.Core.DTO
 
         public ICollection<string> EventTags { get; set; }
 
-        public UserDTO Owner { get; set; }
+        public UserDTO? Owner { get; set; }
 
         public ICollection<UserDTO> Members { get; set; }
     }
