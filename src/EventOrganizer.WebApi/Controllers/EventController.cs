@@ -10,7 +10,7 @@ using System.Net;
 
 namespace EventOrganizer.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [Authorize]
     [ApiController]
     public class EventController : ControllerBase
