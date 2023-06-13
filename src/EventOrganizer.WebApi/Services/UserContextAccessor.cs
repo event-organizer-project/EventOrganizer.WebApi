@@ -1,6 +1,5 @@
 ﻿using EventOrganizer.Core.Services;
 using IdentityModel;
-using Microsoft.IdentityModel.Tokens;
 using System.Security;
 using System.Security.Claims;
 
@@ -21,7 +20,7 @@ namespace EventOrganizer.WebApi.Services
             var claim = httpContextAccessor.HttpContext?.User.Claims
                 .FirstOrDefault(x => x.Type == JwtClaimTypes.Id)?.Value;
 
-            if (claim.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(claim))
                 // TO DO: replace with custom exception classes
                 throw new SecurityException();
 

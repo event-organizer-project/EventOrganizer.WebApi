@@ -1,6 +1,6 @@
-{
+﻿{
   "profiles": {
-    "EventOrganizer.WebClient": {
+    "EventOrganizer.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
@@ -8,7 +8,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7186;http://localhost:5186"
+      "applicationUrl": "https://localhost:7000;http://localhost:5000"
     },
     "IIS Express": {
       "commandName": "IISExpress",

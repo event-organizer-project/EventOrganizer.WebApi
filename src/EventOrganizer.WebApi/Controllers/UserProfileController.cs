@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace EventOrganizer.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [Authorize]
     [ApiController]
     public class UserProfileController : ControllerBase

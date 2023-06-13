@@ -81,9 +81,22 @@ builder.Services.AddAuthentication("Bearer")
         options.Authority = builder.Configuration["Authority"];
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins(builder.Configuration.GetValue<string>("AllowedOrigins:WebClient"))
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // Set up automatic database migration
+
+/*
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider
@@ -91,12 +104,14 @@ using (var scope = app.Services.CreateScope())
 
     dbContext.Database.Migrate();
 }
-
+*/
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Event Organizer V1");
 });
+
+
 
 app.UseHttpsRedirection();
 
@@ -106,5 +121,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseHttpLogging();
+
+app.UseCors();
 
 app.Run();
