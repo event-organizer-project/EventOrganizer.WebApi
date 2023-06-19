@@ -30,17 +30,17 @@ namespace EventOrganizer.Core.Queries.EventQueries
 
             var userOwnEvents = eventRepository
                 .GetAll()
-                .Where(e => e.Owner == user || e.Members.Contains(user))
+                .Where(e => e.Owner.Id == user.Id || e.Members.Select(x => x.Id).Contains(user.Id))
                 .ToArray();
 
             var result = new UserOwnEventsDTO
             {
                 CreatedEvents = userOwnEvents
-                    .Where(e => e.Owner == user)
+                    .Where(e => e.Owner.Id == user.Id)
                     .Select(e => mapper.Map<EventDTO>(e))
                     .ToList(),
                 JoinedEvents = userOwnEvents
-                    .Where(e => e.Members.Contains(user))
+                    .Where(e => e.Members.Select(x => x.Id).Contains(user.Id))
                     .Select(e => mapper.Map<EventDTO>(e))
                     .ToList()
             };

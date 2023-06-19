@@ -1,28 +1,28 @@
-using EventOrganizer.Core.Queries.EventQueries;
-using EventOrganizer.Core.Queries;
-using EventOrganizer.Core.Repositories;
-using EventOrganizer.EF.Repositories;
-using EventOrganizer.EF;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.HttpLogging;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
-using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Commands.EventCommands;
 using EventOrganizer.Core.Commands;
-using EventOrganizer.EF.Triggers;
-using EventOrganizer.WebApi.Services;
-using EventOrganizer.Core.Services;
+using EventOrganizer.Core.DTO;
+using EventOrganizer.Core.Queries.EventQueries;
 using EventOrganizer.Core.Queries.UserQueries;
+using EventOrganizer.Core.Queries;
+using EventOrganizer.Core.Repositories;
+using EventOrganizer.Core.Services;
+using EventOrganizer.EF.MySql.Repositories;
+using EventOrganizer.EF.MySql.Triggers;
 using EventOrganizer.EF.MySql;
+using EventOrganizer.EF;
+using EventOrganizer.WebApi.Services;
+using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<EventOrganazerMySqlDbContext>(options => {
     options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.UseTriggers(triggerOptions => {
-        triggerOptions.AddTrigger<BeforeEventAdding>();
-        triggerOptions.AddTrigger<BeforeEventUpdating>();
+        triggerOptions.AddTrigger<BeforeEventModifying>();
+        triggerOptions.AddTrigger<AfterTagToEventRemoving>();
     });
 });
 
