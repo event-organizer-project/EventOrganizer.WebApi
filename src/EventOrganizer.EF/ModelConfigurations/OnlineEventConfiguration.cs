@@ -18,6 +18,7 @@ namespace EventOrganizer.EF.ModelConfigurations
                 EndDate = new DateTime(2023, 5, 28),
                 StartTime = new TimeSpan(18, 0, 0),
                 EndTime = new TimeSpan(20, 0, 0),
+                OwnerId = 1
             });
         }
     }

@@ -31,5 +31,11 @@ namespace EventOrganizer.EF
             //optionsBuilder
             //    .UseLazyLoadingProxies();
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //var thisAssembly = Assembly.GetExecutingAssembly();
+            //modelBuilder.ApplyConfigurationsFromAssembly(thisAssembly);
+        }
     }
 }
