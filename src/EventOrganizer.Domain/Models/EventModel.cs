@@ -24,6 +24,8 @@
 
         public virtual ICollection<TagToEvent> TagToEvents { get; set; }
 
+        public int OwnerId { get; set; }
+
         public virtual User Owner { get; set; }
 
         public virtual ICollection<User> Members { get; set; }
