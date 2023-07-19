@@ -59,7 +59,7 @@ namespace EventOrganizer.EF.MySql.Migrations
                     StartTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
                     EndTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
                     RecurrenceType = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    OwnerId = table.Column<int>(type: "int", nullable: true),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
                     IsMessagingAllowed = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
                     Discriminator = table.Column<string>(type: "longtext", nullable: false),
                     Location = table.Column<string>(type: "longtext", nullable: true),
@@ -72,7 +72,8 @@ namespace EventOrganizer.EF.MySql.Migrations
                         name: "FK_EventModels_Users_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -180,11 +181,6 @@ namespace EventOrganizer.EF.MySql.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.InsertData(
-                table: "EventModels",
-                columns: new[] { "Id", "Description", "Discriminator", "EndDate", "EndTime", "MeetingLink", "OwnerId", "StartDate", "StartTime", "Title" },
-                values: new object[] { 1, "Mastery completion and presentation of the final product", "OnlineEvent", new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 20, 0, 0, 0), null, null, new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 18, 0, 0, 0), "Event organizer presentation" });
-
-            migrationBuilder.InsertData(
                 table: "EventTags",
                 column: "Keyword",
                 values: new object[]
@@ -202,6 +198,11 @@ namespace EventOrganizer.EF.MySql.Migrations
                     { 1, "mikita.n@godeltech.com", "Mikita", "N", "mikita.n" },
                     { 2, "john.doe@gmail.com", "John", "Doe", "john.doe" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "EventModels",
+                columns: new[] { "Id", "Description", "Discriminator", "EndDate", "EndTime", "MeetingLink", "OwnerId", "StartDate", "StartTime", "Title" },
+                values: new object[] { 1, "Mastery completion and presentation of the final product", "OnlineEvent", new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 20, 0, 0, 0), null, 1, new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 18, 0, 0, 0), "Event organizer presentation" });
 
             migrationBuilder.InsertData(
                 table: "TagToEvent",
