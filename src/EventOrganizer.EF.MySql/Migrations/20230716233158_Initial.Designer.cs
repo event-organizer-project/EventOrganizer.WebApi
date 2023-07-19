@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventOrganizer.EF.MySql.Migrations
 {
     [DbContext(typeof(EventOrganazerMySqlDbContext))]
-    [Migration("20230609025659_Initial")]
+    [Migration("20230716233158_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -19,10 +19,7 @@ namespace EventOrganizer.EF.MySql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
+                .HasAnnotation("ProductVersion", "7.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("EventOrganizer.Domain.Models.DialogueMessage", b =>
@@ -101,7 +98,7 @@ namespace EventOrganizer.EF.MySql.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
-                    b.Property<int?>("OwnerId")
+                    b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.Property<int>("RecurrenceType")
@@ -281,6 +278,7 @@ namespace EventOrganizer.EF.MySql.Migrations
                             EndDate = new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndTime = new TimeSpan(0, 20, 0, 0, 0),
                             IsMessagingAllowed = false,
+                            OwnerId = 1,
                             RecurrenceType = 0,
                             StartDate = new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             StartTime = new TimeSpan(0, 18, 0, 0, 0),
@@ -330,7 +328,9 @@ namespace EventOrganizer.EF.MySql.Migrations
                 {
                     b.HasOne("EventOrganizer.Domain.Models.User", "Owner")
                         .WithMany("CreatedEvents")
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Owner");
                 });

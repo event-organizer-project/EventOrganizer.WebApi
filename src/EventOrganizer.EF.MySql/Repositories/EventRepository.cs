@@ -52,7 +52,7 @@ namespace EventOrganizer.EF.MySql.Repositories
 
             var result = Get(eventModel.Id);
 
-            result.EventTags = result.TagToEvents.Select(x => x.EventTag).ToArray();
+            result.EventTags = result.TagToEvents?.Select(x => x.EventTag).ToArray();
 
             return result;
         }

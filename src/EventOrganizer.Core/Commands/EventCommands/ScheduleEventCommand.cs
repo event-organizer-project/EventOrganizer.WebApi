@@ -35,8 +35,11 @@ namespace EventOrganizer.Core.Commands.EventCommands
             if(parameters.IsEventScheduled)
                 eventModel.Members.Add(currentUser);
             else
-                eventModel.Members.Remove(currentUser);
-
+            {
+                var userForDelete = eventModel.Members.FirstOrDefault(x => x.Id == currentUser.Id);
+                eventModel.Members.Remove(userForDelete);
+            }
+                
             var result = eventRepository.Update(eventModel);
 
             return mapper.Map<EventDetailDTO>(result);

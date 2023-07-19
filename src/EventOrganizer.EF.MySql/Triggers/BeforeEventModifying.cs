@@ -14,7 +14,8 @@ namespace EventOrganizer.EF.MySql.Triggers
 
         public Task BeforeSave(ITriggerContext<EventModel> context, CancellationToken cancellationToken)
         {
-            if (context.ChangeType == ChangeType.Added || context.ChangeType == ChangeType.Modified)
+            if ((context.ChangeType == ChangeType.Added || context.ChangeType == ChangeType.Modified)
+                && context.Entity.TagToEvents != null)
             {
                 foreach (var tagToEvent in context.Entity.TagToEvents)
                 {
