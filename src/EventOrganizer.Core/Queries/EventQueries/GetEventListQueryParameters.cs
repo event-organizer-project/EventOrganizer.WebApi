@@ -4,7 +4,7 @@
     {
         public string? Filter { get; set; }
 
-        public IList<string> Tags { get; set; }
+        public IList<string>? Tags { get; set; }
 
         public int Top { get; set; }
 
