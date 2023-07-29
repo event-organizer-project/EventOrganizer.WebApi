@@ -3,6 +3,7 @@ using EventOrganizer.Core.Commands.EventCommands;
 using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Queries;
 using EventOrganizer.Core.Queries.EventQueries;
+using EventOrganizer.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -51,17 +52,34 @@ namespace EventOrganizer.WebApi.Controllers
         /// <summary>
         /// Returns a list of events according to the given criteria
         /// </summary>
-        /// <param name="filter">Event filter</param>
         /// <param name="top">Event top count</param>
         /// <param name="skip">Event skip count</param>
         /// <returns>Event List</returns>
-        [HttpGet]
-        public ActionResult<IList<EventDTO>> Get(string? filter = null, int top = 20, int skip = 0)
+        [HttpGet("all")]
+        public ActionResult<IList<EventDTO>> Get(int top = 20, int skip = 0)
         {
             var result = getEventListQuery.Execute(new GetEventListQueryParameters { 
-                Filter = filter,
                 Top = top,
                 Skip = skip
+            });
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Returns a list of events according to the given criteria
+        /// </summary>
+        /// <param name="criteria">Event List Search Criteria</param>
+        /// <returns>Event List</returns>
+        [HttpPost("list")]
+        public ActionResult<IList<EventDTO>> Get(EventListSearchCriteria criteria)
+        {
+            var result = getEventListQuery.Execute(new GetEventListQueryParameters
+            {
+                Filter = criteria.Filter,
+                Top = criteria.Top,
+                Skip = criteria.Skip,
+                Tags = criteria.Tags
             });
 
             return Ok(result);
@@ -91,7 +109,7 @@ namespace EventOrganizer.WebApi.Controllers
         [SwaggerResponse((int)HttpStatusCode.BadRequest)]
         [Produces("application/json")]
         [HttpPost]
-        public ActionResult<EventDetailDTO> Post([FromBody] EventDetailDTO eventView)
+        public ActionResult<EventDetailDTO> Post(EventDetailDTO eventView)
         {
             var result = createEventCommand.
                 Execute(new CreateEventCommandParameters { EventDetailDTO = eventView });

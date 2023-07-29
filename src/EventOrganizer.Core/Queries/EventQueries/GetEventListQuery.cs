@@ -23,16 +23,38 @@ namespace EventOrganizer.Core.Queries.EventQueries
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
+            // TO DO: optimize search method
+
             var events = eventRepository
-                .GetAll()
-                //TO DO: add search by EventTags and title filter
+                .GetAll();
+
+            if (!string.IsNullOrEmpty(parameters.Filter))
+            {
+                events = events.Where(x => x.Title.Contains(parameters.Filter, StringComparison.OrdinalIgnoreCase)
+                || x.Description.Contains(parameters.Filter, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (parameters.Tags != null && parameters.Tags.Any())
+            {
+                events = events.Where(x =>
+                {
+                    foreach (var tag in parameters.Tags)
+                    {
+                        if (!x.EventTags.Any(y => y.Keyword == tag))
+                            return false;
+                    }
+                    return true;
+                });
+            }
+                
+            var result = events
                 .Skip(parameters.Skip)
                 .Take(parameters.Top)
                 .ToArray()
                 .Select(e => mapper.Map<EventDTO>(e))
                 .ToList();
 
-            return events;
+            return result;
         }
     }
 }
