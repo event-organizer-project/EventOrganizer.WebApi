@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EventOrganizer.Core.CustomExceptions;
 using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Repositories;
 
@@ -17,11 +18,14 @@ namespace EventOrganizer.Core.Commands.EventCommands
             this.mapper = mapper
                 ?? throw new ArgumentNullException(nameof(mapper));
         }
+
         public EventDetailDTO Execute(UpdateEventCommandParameters parameters)
         {
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
             var eventModel = eventRepository.Get(parameters.EventDetailDTO.Id);
+
+            if (eventModel == null) throw new ResourceNotFoundException();
 
             eventModel = mapper.Map(parameters.EventDetailDTO, eventModel);
 

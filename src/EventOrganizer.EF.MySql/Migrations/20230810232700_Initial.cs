@@ -202,7 +202,11 @@ namespace EventOrganizer.EF.MySql.Migrations
             migrationBuilder.InsertData(
                 table: "EventModels",
                 columns: new[] { "Id", "Description", "Discriminator", "EndDate", "EndTime", "MeetingLink", "OwnerId", "StartDate", "StartTime", "Title" },
-                values: new object[] { 1, "Mastery completion and presentation of the final product", "OnlineEvent", new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 20, 0, 0, 0), null, 1, new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 18, 0, 0, 0), "Event organizer presentation" });
+                values: new object[,]
+                {
+                    { 1, "Mastery completion and presentation of the final product", "OnlineEvent", new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 20, 0, 0, 0), null, 1, new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 18, 0, 0, 0), "Event organizer presentation" },
+                    { 2, "Description created by John", "OnlineEvent", new DateTime(2023, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 17, 0, 0, 0), null, 2, new DateTime(2023, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 15, 0, 0, 0), "Event created by John" }
+                });
 
             migrationBuilder.InsertData(
                 table: "TagToEvent",
@@ -210,7 +214,8 @@ namespace EventOrganizer.EF.MySql.Migrations
                 values: new object[,]
                 {
                     { 1, "godel" },
-                    { 1, "online" }
+                    { 1, "online" },
+                    { 2, "godel" }
                 });
 
             migrationBuilder.CreateIndex(

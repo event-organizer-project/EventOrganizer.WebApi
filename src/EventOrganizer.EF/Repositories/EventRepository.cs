@@ -23,7 +23,7 @@ namespace EventOrganizer.EF.Repositories
                 .Include(e => e.EventResults);
         }
 
-        public EventModel Get(int id)
+        public EventModel? Get(int id)
         {
             var model = GetAll().FirstOrDefault(x => x.Id == id);
 

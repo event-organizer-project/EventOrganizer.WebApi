@@ -6,7 +6,7 @@ namespace EventOrganizer.Core.Repositories
     {
         IEnumerable<EventModel> GetAll();
 
-        EventModel Get(int id);
+        EventModel? Get(int id);
 
         EventModel Create(EventModel eventModel);
 

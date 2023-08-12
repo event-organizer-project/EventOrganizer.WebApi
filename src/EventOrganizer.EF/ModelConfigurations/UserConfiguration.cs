@@ -20,23 +20,6 @@ namespace EventOrganizer.EF.EntityConfigurations
                 .HasMany(u => u.TrackedEvents)
                 .WithMany(em => em.Members)
                 .UsingEntity<EventInvolvement>();
-
-            // Initial data seeding
-            builder.HasData(new User
-            {
-                Id = 1,
-                FirstName = "Mikita",
-                LastName = "N",
-                Nickname = "mikita.n",
-                Email = "mikita.n@godeltech.com"
-            }, new User
-            {
-                Id = 2,
-                FirstName = "John",
-                LastName = "Doe",
-                Nickname = "john.doe",
-                Email = "john.doe@gmail.com"
-            });
         }
     }
 }

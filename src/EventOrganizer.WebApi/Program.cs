@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -125,3 +126,9 @@ app.UseHttpLogging();
 app.UseCors();
 
 app.Run();
+
+
+
+[ExcludeFromCodeCoverage]
+public partial class Program
+{ }

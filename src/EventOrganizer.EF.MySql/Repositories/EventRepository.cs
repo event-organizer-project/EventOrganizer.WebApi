@@ -22,7 +22,7 @@ namespace EventOrganizer.EF.MySql.Repositories
                 .Include(e => e.EventTags);
         }
 
-        public EventModel Get(int id)
+        public EventModel? Get(int id)
         {
             var model = dbContext.EventModels
                 .Include(e => e.Owner)

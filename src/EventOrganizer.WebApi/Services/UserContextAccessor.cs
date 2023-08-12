@@ -17,12 +17,11 @@ namespace EventOrganizer.WebApi.Services
 
         public int GetUserId()
         {
-            var claim = httpContextAccessor.HttpContext?.User.Claims
-                .FirstOrDefault(x => x.Type == JwtClaimTypes.Id)?.Value;
+            var claim = GetUserContext().Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Id)?.Value;
 
             if (string.IsNullOrEmpty(claim))
                 // TO DO: replace with custom exception classes
-                throw new SecurityException();
+                throw new SecurityException("Claim does not exist");
 
             if (!int.TryParse(claim, out int userId))
                 // TO DO: replace with custom exception classes
@@ -34,7 +33,7 @@ namespace EventOrganizer.WebApi.Services
         public ClaimsPrincipal GetUserContext()
         {
             if(httpContextAccessor.HttpContext == null)
-                throw new SecurityException();
+                throw new SecurityException("HttpContext does not exist");
 
             return httpContextAccessor.HttpContext.User;
         }

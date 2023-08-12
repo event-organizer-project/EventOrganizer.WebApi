@@ -22,11 +22,6 @@ namespace EventOrganizer.EF.MySql.ModelConfigurations
                 HasKey(tte => new { tte.EventId, tte.Keyword });
 
             builder.ToTable(nameof(TagToEvent));
-
-            builder.HasData(
-                new TagToEvent { Keyword = "godel", EventId = 1 },
-                new TagToEvent { Keyword = "online", EventId = 1 }
-                );
         }
     }
 }

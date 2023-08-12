@@ -1,0 +1,11 @@
+{
+  "$schema": "https://coverlet.dev/schema/coverlet-settings.schema.json",
+  "excludeByFile": [
+    "**/EventOrganizer.WebApi/Controllers**"
+  ],
+  "exclude": [
+    "xunit.runner.*",
+    "coverlet.collector",
+    "EventOrganizer.Domain"
+  ]
+}

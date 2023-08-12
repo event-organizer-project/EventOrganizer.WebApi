@@ -26,6 +26,9 @@ namespace EventOrganizer.Core.Queries.EventQueries
 
         public UserOwnEventsDTO Execute(VoidParameters parameters)
         {
+            if (parameters == null) 
+                throw new ArgumentNullException(nameof(parameters));
+
             var user = userHandler.GetCurrentUser();
 
             var userOwnEvents = eventRepository

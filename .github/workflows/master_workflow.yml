@@ -1,0 +1,30 @@
+name: Deployment to AWS EB
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    uses: event-organizer-project/github-actions/.github/workflows/dotnet_build.yml@master
+
+  test:
+    needs: build
+    uses: event-organizer-project/github-actions/.github/workflows/dotnet_test.yml@master
+    with:
+      line_rate_thresholds: '40 90'
+
+  apply_migrations:
+    needs: [ build, test ]
+    uses: event-organizer-project/github-actions/.github/workflows/dotnet_ef_apply_migrations.yml@master
+    with:
+      connection-string: ${{ secrets.DATABASE_CONNECTION_STRING }}
+      startup-project: src/EventOrganizer.WebApi/EventOrganizer.WebApi.csproj
+      project: src/EventOrganizer.EF.MySql/EventOrganizer.EF.MySql.csproj
+
+  deploy:
+    needs: [ build, test, apply_migrations ]
+    uses: event-organizer-project/github-actions/.github/workflows/dotnet_eb_deploy.yml@master
+    with:
+      application_name: event-organizer-web-api
+      environment_name: eo-web-api

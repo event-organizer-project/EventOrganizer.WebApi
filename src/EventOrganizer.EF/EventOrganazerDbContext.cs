@@ -26,16 +26,19 @@ namespace EventOrganizer.EF
             : base(options)
         { }
 
+        /*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder
             //    .UseLazyLoadingProxies();
         }
 
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //var thisAssembly = Assembly.GetExecutingAssembly();
             //modelBuilder.ApplyConfigurationsFromAssembly(thisAssembly);
         }
+        */
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EventOrganizer.Core.CustomExceptions;
 using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Repositories;
 using EventOrganizer.Core.Services;
@@ -26,9 +27,13 @@ namespace EventOrganizer.Core.Commands.EventCommands
 
         public EventDetailDTO Execute(ScheduleEventCommandParameters parameters)
         {
-            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
 
             var eventModel = eventRepository.Get(parameters.EventId);
+
+            if (eventModel == null)
+                throw new ResourceNotFoundException();
 
             var currentUser = userHandler.GetCurrentUser();
 

@@ -1,0 +1,20 @@
+name: Action
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  pull-requests: write
+
+env:
+  EO_WORKFLOWS_PATH: event-organizer-project/github-actions/.github/workflows/dotnet
+
+jobs:
+  build:
+    uses: event-organizer-project/github-actions/.github/workflows/dotnet_build.yml@master
+
+  test:
+    needs: build
+    uses: event-organizer-project/github-actions/.github/workflows/dotnet_test.yml@master
+    with:
+      line_rate_thresholds: '40 90'
