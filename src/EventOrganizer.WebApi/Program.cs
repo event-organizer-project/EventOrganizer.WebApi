@@ -95,24 +95,11 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Set up automatic database migration
-
-/*
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider
-        .GetRequiredService<EventOrganazerMySqlDbContext>();
-
-    dbContext.Database.Migrate();
-}
-*/
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Event Organizer V1");
 });
-
-
 
 app.UseHttpsRedirection();
 
