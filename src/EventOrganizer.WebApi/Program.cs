@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -94,24 +95,11 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Set up automatic database migration
-
-/*
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider
-        .GetRequiredService<EventOrganazerMySqlDbContext>();
-
-    dbContext.Database.Migrate();
-}
-*/
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Event Organizer V1");
 });
-
-
 
 app.UseHttpsRedirection();
 
@@ -125,3 +113,9 @@ app.UseHttpLogging();
 app.UseCors();
 
 app.Run();
+
+
+
+[ExcludeFromCodeCoverage]
+public partial class Program
+{ }

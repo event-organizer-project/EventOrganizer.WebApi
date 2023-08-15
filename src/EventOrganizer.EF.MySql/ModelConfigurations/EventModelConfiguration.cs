@@ -12,10 +12,10 @@ namespace EventOrganizer.EF.MySql.ModelConfigurations
                 .HasMaxLength(100);
 
             builder.Property(em => em.RecurrenceType)
-                    .HasDefaultValue(RecurrenceType.DoesNotRepeat);
+                .HasDefaultValue(RecurrenceType.DoesNotRepeat);
 
             builder.Property(em => em.IsMessagingAllowed)
-                    .HasDefaultValue(false);
+                .HasDefaultValue(false);
         }
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventOrganizer.EF.MySql.Migrations
 {
     [DbContext(typeof(EventOrganazerMySqlDbContext))]
-    [Migration("20230716233158_Initial")]
+    [Migration("20230810232700_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -200,6 +200,11 @@ namespace EventOrganizer.EF.MySql.Migrations
                         {
                             EventId = 1,
                             Keyword = "online"
+                        },
+                        new
+                        {
+                            EventId = 2,
+                            Keyword = "godel"
                         });
                 });
 
@@ -283,6 +288,19 @@ namespace EventOrganizer.EF.MySql.Migrations
                             StartDate = new DateTime(2023, 5, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             StartTime = new TimeSpan(0, 18, 0, 0, 0),
                             Title = "Event organizer presentation"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Description created by John",
+                            EndDate = new DateTime(2023, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new TimeSpan(0, 17, 0, 0, 0),
+                            IsMessagingAllowed = false,
+                            OwnerId = 2,
+                            RecurrenceType = 0,
+                            StartDate = new DateTime(2023, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new TimeSpan(0, 15, 0, 0, 0),
+                            Title = "Event created by John"
                         });
                 });
 

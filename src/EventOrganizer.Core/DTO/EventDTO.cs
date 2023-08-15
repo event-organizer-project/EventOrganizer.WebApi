@@ -6,9 +6,9 @@ namespace EventOrganizer.Core.DTO
     {
         public int Id { get; set; }
 
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         public DateOnly StartDate { get; set; }
 
@@ -20,6 +20,6 @@ namespace EventOrganizer.Core.DTO
 
         public RecurrenceType RecurrenceType { get; set; }
 
-        public ICollection<string> EventTags { get; set; }
+        public ICollection<string> EventTags { get; set; } = new List<string>();
     }
 }

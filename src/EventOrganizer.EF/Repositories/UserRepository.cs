@@ -13,7 +13,7 @@ namespace EventOrganizer.EF.Repositories
                 ?? throw new ArgumentNullException(nameof(eventOrganazerDbContext));
         }
 
-        IEnumerable<User> IUserRepository.GetAll()
+        public IEnumerable<User> GetAll()
         {
             return dbContext.Users;
         }

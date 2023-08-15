@@ -7,6 +7,7 @@ using EventOrganizer.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
 namespace EventOrganizer.WebApi.Controllers
@@ -14,6 +15,7 @@ namespace EventOrganizer.WebApi.Controllers
     [Route("[controller]")]
     [Authorize]
     [ApiController]
+    [ExcludeFromCodeCoverage]
     public class EventController : ControllerBase
     {
         private readonly IQuery<GetEventListQueryParameters, IList<EventDTO>> getEventListQuery;
@@ -112,7 +114,7 @@ namespace EventOrganizer.WebApi.Controllers
         public ActionResult<EventDetailDTO> Post(EventDetailDTO eventView)
         {
             var result = createEventCommand.
-                Execute(new CreateEventCommandParameters { EventDetailDTO = eventView });
+                Execute(new CreateEventCommandParameters(eventView));
 
             return Ok(result);
         }
@@ -130,7 +132,7 @@ namespace EventOrganizer.WebApi.Controllers
         public ActionResult<EventDetailDTO> Put(EventDetailDTO eventView)
         {
             var result = updateEventCommand.
-                Execute(new UpdateEventCommandParameters { EventDetailDTO = eventView });
+                Execute(new UpdateEventCommandParameters(eventView));
 
             return Ok(result);
         }

@@ -1,5 +1,4 @@
 ﻿using EventOrganizer.EF.EntityConfigurations;
-using EventOrganizer.EF.ModelConfigurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventOrganizer.EF.MySql
@@ -16,8 +15,9 @@ namespace EventOrganizer.EF.MySql
             modelBuilder.ApplyConfiguration(new ModelConfigurations.EventInvolvementConfiguration());
             modelBuilder.ApplyConfiguration(new ModelConfigurations.TagToEventConfiguration());
             modelBuilder.ApplyConfiguration(new EventTagConfiguration());
-            modelBuilder.ApplyConfiguration(new OnlineEventConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+
+            InitialDataSeeding.Filling(modelBuilder);
         }
     }
 }

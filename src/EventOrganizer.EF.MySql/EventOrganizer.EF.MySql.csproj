@@ -15,4 +15,8 @@
     <ProjectReference Include="..\EventOrganizer.EF\EventOrganizer.EF.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+  </ItemGroup>
+	
 </Project>

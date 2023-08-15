@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EventOrganizer.Core.CustomExceptions;
 using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Repositories;
 
@@ -26,9 +27,8 @@ namespace EventOrganizer.Core.Queries.EventQueries
             var eventModel = eventRepository
                 .Get(parameters.Id);
 
-            // TO DO: replace logic
             if (eventModel == null)
-                throw new ArgumentOutOfRangeException();
+                throw new ResourceNotFoundException();
 
             var result = mapper.Map<EventDetailDTO>(eventModel);
 

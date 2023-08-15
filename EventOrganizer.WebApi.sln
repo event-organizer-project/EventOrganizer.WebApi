@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventOrganizer.EF.MySql", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventOrganizer.WebApi", "src\EventOrganizer.WebApi\EventOrganizer.WebApi.csproj", "{1A78B7B5-AFF4-49B7-99DA-C1464B20E5AB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B4E443D2-09B9-4262-B9E6-34443874A085}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventOrganizer.Test", "test\EventOrganizer.Test\EventOrganizer.Test.csproj", "{FB0DDBD9-D4EE-4D47-A658-FF8B1C600944}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +45,10 @@ Global
 		{1A78B7B5-AFF4-49B7-99DA-C1464B20E5AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A78B7B5-AFF4-49B7-99DA-C1464B20E5AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A78B7B5-AFF4-49B7-99DA-C1464B20E5AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB0DDBD9-D4EE-4D47-A658-FF8B1C600944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB0DDBD9-D4EE-4D47-A658-FF8B1C600944}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB0DDBD9-D4EE-4D47-A658-FF8B1C600944}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB0DDBD9-D4EE-4D47-A658-FF8B1C600944}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +59,7 @@ Global
 		{903D77F1-F468-477E-B9AC-B5BF01355DAD} = {52296CBF-8132-463E-8E29-95D55FFF321E}
 		{AE02ADD2-F6AA-405F-955A-F3B75F9E611F} = {52296CBF-8132-463E-8E29-95D55FFF321E}
 		{1A78B7B5-AFF4-49B7-99DA-C1464B20E5AB} = {52296CBF-8132-463E-8E29-95D55FFF321E}
+		{FB0DDBD9-D4EE-4D47-A658-FF8B1C600944} = {B4E443D2-09B9-4262-B9E6-34443874A085}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {71A3A737-041C-4BC2-B4C6-26012EB8315E}
