@@ -16,6 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Diagnostics.CodeAnalysis;
+using EventOrganizer.Core.Queries.CalendarQueries;
+using EventOrganizer.Core.Queries.TagQueries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,11 +32,13 @@ builder.Services.AddDbContext<EventOrganazerMySqlDbContext>(options => {
 builder.Services.AddTransient<IQuery<GetEventListQueryParameters, IList<EventDTO>>, GetEventListQuery>();
 builder.Services.AddTransient<IQuery<GetEventByIdQueryParameters, EventDetailDTO>, GetEventByIdQuery>();
 builder.Services.AddTransient<IQuery<VoidParameters, UserOwnEventsDTO>, GetCurrentUserOwnEventsQuery>();
+builder.Services.AddTransient<IQuery<GetWeeklyScheduleQueryParameters, WeeklyScheduleDTO>, GetWeeklyScheduleQuery>();
 builder.Services.AddTransient<ICommand<CreateEventCommandParameters, EventDetailDTO>, CreateEventCommand>();
 builder.Services.AddTransient<ICommand<UpdateEventCommandParameters, EventDetailDTO>, UpdateEventCommand>();
 builder.Services.AddTransient<ICommand<DeleteEventCommandParameters, VoidResult>, DeleteEventCommand>();
 builder.Services.AddTransient<ICommand<ScheduleEventCommandParameters, EventDetailDTO>, ScheduleEventCommand>();
 
+builder.Services.AddTransient<IQuery<VoidParameters, IList<string>>, GetTagListQuery>();
 
 builder.Services.AddTransient<IQuery<VoidParameters, UserDTO>, GetCurrentUserQuery>();
 
@@ -42,6 +46,7 @@ builder.Services.AddTransient<EventOrganazerDbContext, EventOrganazerMySqlDbCont
 
 builder.Services.AddTransient<IEventRepository, EventRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<ITagRepository, TagRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -49,6 +54,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<IUserContextAccessor, UserContextAccessor>();
 
 builder.Services.AddTransient<IUserHandler, UserHandler>();
+builder.Services.AddTransient<IWeekHandler, WeekHandler>();
 
 builder.Services.AddControllers();
 
