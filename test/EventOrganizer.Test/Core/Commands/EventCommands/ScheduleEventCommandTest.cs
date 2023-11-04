@@ -15,6 +15,7 @@ namespace EventOrganizer.Test.Core.Commands.EventCommands
         private Mock<IEventRepository> eventRepositoryMock;
         private Mock<IMapper> mapperMock;
         private Mock<IUserHandler> userHandlerMock;
+        private Mock<ISchedulerClient> schedulerClient;
 
         [SetUp]
         public void Setup()
@@ -22,8 +23,10 @@ namespace EventOrganizer.Test.Core.Commands.EventCommands
             eventRepositoryMock = new Mock<IEventRepository>();
             mapperMock = new Mock<IMapper>();
             userHandlerMock = new Mock<IUserHandler>();
+            schedulerClient = new Mock<ISchedulerClient>();
 
-            underTest = new ScheduleEventCommand(eventRepositoryMock.Object, mapperMock.Object, userHandlerMock.Object);
+            underTest = new ScheduleEventCommand(eventRepositoryMock.Object,
+                mapperMock.Object, userHandlerMock.Object, schedulerClient.Object);
         }
 
         [Test]

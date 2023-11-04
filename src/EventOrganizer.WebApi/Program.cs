@@ -18,6 +18,7 @@ using System.Reflection;
 using System.Diagnostics.CodeAnalysis;
 using EventOrganizer.Core.Queries.CalendarQueries;
 using EventOrganizer.Core.Queries.TagQueries;
+using EventOrganizer.WebApi.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,9 @@ builder.Services.AddDbContext<EventOrganazerMySqlDbContext>(options => {
         triggerOptions.AddTrigger<AfterTagToEventRemoving>();
     });
 });
+
+
+builder.Services.AddTransient<ISchedulerClient, SchedulerClient>();
 
 builder.Services.AddTransient<IQuery<GetEventListQueryParameters, IList<EventDTO>>, GetEventListQuery>();
 builder.Services.AddTransient<IQuery<GetEventByIdQueryParameters, EventDetailDTO>, GetEventByIdQuery>();
@@ -81,11 +85,13 @@ builder.Services.AddHttpLogging(logging =>
     logging.ResponseBodyLogLimit = 4096;
 });
 
+var webOptions = builder.Configuration.GetSection(nameof(WebOptions)).Get<WebOptions>();
+
 builder.Services.AddAuthentication("Bearer")
     .AddIdentityServerAuthentication("Bearer", options =>
     {
-        options.ApiName = "eventorganizerapi";
-        options.Authority = builder.Configuration["Authority"];
+        options.ApiName = webOptions.WebApiName;
+        options.Authority = webOptions.Authority;
     });
 
 builder.Services.AddCors(options =>
@@ -93,11 +99,13 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         policy =>
         {
-            policy.WithOrigins(builder.Configuration.GetValue<string>("AllowedOrigins:WebClient"))
+            policy.WithOrigins(webOptions.WebClient)
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
 });
+
+builder.Services.Configure<WebOptions>(builder.Configuration.GetSection(nameof(WebOptions)));
 
 var app = builder.Build();
 

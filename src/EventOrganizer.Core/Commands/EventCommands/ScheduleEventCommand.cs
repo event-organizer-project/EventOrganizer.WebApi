@@ -14,8 +14,10 @@ namespace EventOrganizer.Core.Commands.EventCommands
 
         private readonly IUserHandler userHandler;
 
+        private readonly ISchedulerClient schedulerClient;
+
         public ScheduleEventCommand(IEventRepository eventRepository, IMapper mapper,
-            IUserHandler userHandler)
+            IUserHandler userHandler, ISchedulerClient schedulerClient)
         {
             this.eventRepository = eventRepository
                 ?? throw new ArgumentNullException(nameof(eventRepository));
@@ -23,6 +25,8 @@ namespace EventOrganizer.Core.Commands.EventCommands
                 ?? throw new ArgumentNullException(nameof(mapper));
             this.userHandler = userHandler
                 ?? throw new ArgumentNullException(nameof(userHandler));
+            this.schedulerClient = schedulerClient
+                ?? throw new ArgumentNullException(nameof(schedulerClient));
         }
 
         public EventDetailDTO Execute(ScheduleEventCommandParameters parameters)
@@ -46,6 +50,11 @@ namespace EventOrganizer.Core.Commands.EventCommands
             }
                 
             var result = eventRepository.Update(eventModel);
+
+            if (result.StartDate == DateTime.Today && parameters.IsEventScheduled)
+            {
+                schedulerClient.AddEventToSchedule(result.Id, currentUser.Id);
+            }
 
             return mapper.Map<EventDetailDTO>(result);
         }
