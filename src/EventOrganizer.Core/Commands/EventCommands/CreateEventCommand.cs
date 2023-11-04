@@ -14,8 +14,10 @@ namespace EventOrganizer.Core.Commands.EventCommands
 
         private readonly IUserHandler userHandler;
 
+        private readonly ISchedulerClient schedulerClient;
+
         public CreateEventCommand(IEventRepository eventRepository, IMapper mapper,
-            IUserHandler userHandler)
+            IUserHandler userHandler, ISchedulerClient schedulerClient)
         {
             this.eventRepository = eventRepository
                 ?? throw new ArgumentNullException(nameof(eventRepository));
@@ -23,6 +25,8 @@ namespace EventOrganizer.Core.Commands.EventCommands
                 ?? throw new ArgumentNullException(nameof(mapper));
             this.userHandler = userHandler
                 ?? throw new ArgumentNullException(nameof(userHandler));
+            this.schedulerClient = schedulerClient
+                ?? throw new ArgumentNullException(nameof(schedulerClient));
         }
 
         public EventDetailDTO Execute(CreateEventCommandParameters parameters)
@@ -32,8 +36,14 @@ namespace EventOrganizer.Core.Commands.EventCommands
             var eventModel = mapper.Map<EventModel>(parameters.EventDetailDTO);
 
             eventModel.Owner = userHandler.GetCurrentUser();
+            eventModel.Members = new[] { eventModel.Owner };
 
             var result = eventRepository.Create(eventModel);
+
+            if (result.StartDate == DateTime.Today)
+            {
+                schedulerClient.AddEventToSchedule(result.Id, result.OwnerId);
+            }
 
             return mapper.Map<EventDetailDTO>(result);
         }

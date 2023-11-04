@@ -50,8 +50,11 @@ namespace EventOrganizer.EF.MySql
             modelBuilder.Entity<TagToEvent>().HasData(
                 new TagToEvent { Keyword = "godel", EventId = 1 },
                 new TagToEvent { Keyword = "online", EventId = 1 },
-                new TagToEvent { Keyword = "godel", EventId = 2 }
-                );
+                new TagToEvent { Keyword = "godel", EventId = 2 });
+
+            modelBuilder.Entity<EventInvolvement>().HasData(
+                new EventInvolvement { UserId = 1, EventId = 1 },
+                new EventInvolvement { UserId = 2, EventId = 2 });
         }
     }
 }
