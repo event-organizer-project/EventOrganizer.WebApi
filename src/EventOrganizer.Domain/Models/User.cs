@@ -17,5 +17,7 @@
         public virtual ICollection<EventModel> TrackedEvents { get; set; }
 
         public virtual ICollection<EventInvolvement> EventInvolvements { get; set; }
+
+        public virtual ICollection<Subscription> Subscriptions { get; set; }
     }
 }

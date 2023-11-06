@@ -22,6 +22,8 @@ namespace EventOrganizer.EF
 
         public DbSet<TagToEvent> TagToEvents { get; set; }
 
+        public DbSet<Subscription> Subscriptions { get; set; }
+
         public EventOrganazerDbContext(DbContextOptions options)
             : base(options)
         { }
