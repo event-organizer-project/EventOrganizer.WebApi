@@ -19,6 +19,7 @@ using System.Diagnostics.CodeAnalysis;
 using EventOrganizer.Core.Queries.CalendarQueries;
 using EventOrganizer.Core.Queries.TagQueries;
 using EventOrganizer.WebApi.Infrastructure;
+using EventOrganizer.Core.Commands.SubscriptionCommands;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,7 @@ builder.Services.AddTransient<ICommand<CreateEventCommandParameters, EventDetail
 builder.Services.AddTransient<ICommand<UpdateEventCommandParameters, EventDetailDTO>, UpdateEventCommand>();
 builder.Services.AddTransient<ICommand<DeleteEventCommandParameters, VoidResult>, DeleteEventCommand>();
 builder.Services.AddTransient<ICommand<ScheduleEventCommandParameters, EventDetailDTO>, ScheduleEventCommand>();
+builder.Services.AddTransient<ICommand<CreateSubscriptionCommandParameters, VoidResult>, CreateSubscriptionCommand>();
 
 builder.Services.AddTransient<IQuery<VoidParameters, IList<string>>, GetTagListQuery>();
 
@@ -51,6 +53,7 @@ builder.Services.AddTransient<EventOrganazerDbContext, EventOrganazerMySqlDbCont
 builder.Services.AddTransient<IEventRepository, EventRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ITagRepository, TagRepository>();
+builder.Services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
