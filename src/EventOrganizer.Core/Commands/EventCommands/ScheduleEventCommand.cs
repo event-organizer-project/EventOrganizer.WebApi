@@ -51,9 +51,11 @@ namespace EventOrganizer.Core.Commands.EventCommands
                 
             var result = eventRepository.Update(eventModel);
 
-            if (result.StartDate == DateTime.Today && parameters.IsEventScheduled)
+            if (result.StartDate == DateTime.Today)
             {
-                schedulerClient.AddEventToSchedule(result.Id, currentUser.Id);
+                var schedulerResult = parameters.IsEventScheduled
+                    ? schedulerClient.AddEventToSchedule(result.Id, currentUser.Id)
+                    : schedulerClient.RemoveEventFromSchedule(result.Id, currentUser.Id);
             }
 
             return mapper.Map<EventDetailDTO>(result);
