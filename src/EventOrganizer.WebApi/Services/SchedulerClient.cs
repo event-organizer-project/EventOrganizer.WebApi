@@ -2,7 +2,7 @@
 using EventOrganizer.WebApi.Infrastructure;
 using IdentityModel.Client;
 using Microsoft.Extensions.Options;
-using System.Text;
+using System.Security;
 
 namespace EventOrganizer.WebApi.Services
 {
@@ -10,47 +10,62 @@ namespace EventOrganizer.WebApi.Services
     {
         private static readonly HttpClient client = new();
 
-        private readonly WebOptions webOptions;
+        private readonly ClientCredentialsTokenRequest tokenRequest;
+
+        private readonly string endpoint;
 
         public SchedulerClient(IOptions<WebOptions> options)
         {
-            webOptions = options.Value;
+            var webOptions = options.Value;
+
+            tokenRequest = new ClientCredentialsTokenRequest
+            {
+                Address = $"{webOptions.Authority}/connect/token",
+                ClientId = webOptions.WebApiName,
+                Scope = webOptions.SchedulerApiName
+            };
+
+            endpoint = webOptions.SchedulerClient;
         }
 
         public async Task AddEventToSchedule(int eventId, int userId)
         {
+            await Request(() => client.PostAsync(GetEndpoint(eventId, userId), null));
+        }
+
+        public async Task RemoveEventFromSchedule(int eventId, int userId)
+        {
+            await Request(() => client.DeleteAsync(GetEndpoint(eventId, userId)));
+        }
+
+        private async Task Request(Func<Task<HttpResponseMessage>> request)
+        {
             try
             {
-                var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
-                {
-                    Address = $"{webOptions.Authority}/connect/token",
-                    ClientId = webOptions.WebApiName,
-                    Scope = webOptions.SchedulerApiName
-                });
+                var tokenResponse = await client.RequestClientCredentialsTokenAsync(tokenRequest);
 
                 if (tokenResponse.IsError)
                 {
-                    // TO DO: Add logger
-                    return;
+                    // TO DO: replace with custom exception classes
+                    throw new SecurityException("Token request failed");
                 }
 
                 client.SetBearerToken(tokenResponse.AccessToken);
 
-                var url = $"{webOptions.SchedulerClient}/scheduler/add-event";
-                var data = new StringContent($"{{\"EventId\":\"{eventId}\", \"UserId\":\"{userId}\"}}", Encoding.UTF8, "application/json");
-
-                HttpResponseMessage response = await client.PostAsync(url, data);
+                var response = await request();
                 response.EnsureSuccessStatusCode();
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
+            {
+                // TO DO: Add logger
+            }
+            catch (SecurityException)
             {
                 // TO DO: Add logger
             }
         }
 
-        public Task RemoveEventFromSchedule(int eventId, int userId)
-        {
-            throw new NotImplementedException();
-        }
+        private string GetEndpoint(int eventId, int? userId = null) =>
+            $"{endpoint}/scheduler/{eventId}/{userId}";
     }
 }
