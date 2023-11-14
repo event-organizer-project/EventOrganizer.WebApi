@@ -1,4 +1,5 @@
-name: Deployment to AWS EB
+name: master
+
 on:
   push:
     branches:
@@ -6,25 +7,22 @@ on:
 
 jobs:
   build:
-    uses: event-organizer-project/github-actions/.github/workflows/dotnet_build.yml@master
+    name: Build
+    uses: event-organizer-project/event-organizer-infrastructure/.github/workflows/dotnet_build.yml@master
 
   test:
+    name: Test
     needs: build
-    uses: event-organizer-project/github-actions/.github/workflows/dotnet_test.yml@master
+    uses: event-organizer-project/event-organizer-infrastructure/.github/workflows/dotnet_test.yml@master
+    
+  build_docker:
+    name: Build & Push Docker Image
+    needs: test
+    uses: event-organizer-project/event-organizer-infrastructure/.github/workflows/docker_build_push.yml@master
     with:
-      line_rate_thresholds: '40 90'
-
-  apply_migrations:
-    needs: [ build, test ]
-    uses: event-organizer-project/github-actions/.github/workflows/dotnet_ef_apply_migrations.yml@master
-    with:
-      connection-string: ${{ secrets.DATABASE_CONNECTION_STRING }}
-      startup-project: src/EventOrganizer.WebApi/EventOrganizer.WebApi.csproj
-      project: src/EventOrganizer.EF.MySql/EventOrganizer.EF.MySql.csproj
-
-  deploy:
-    needs: [ build, test, apply_migrations ]
-    uses: event-organizer-project/github-actions/.github/workflows/dotnet_eb_deploy.yml@master
-    with:
-      application_name: event-organizer-web-api
-      environment_name: eo-web-api
+      dockerfile_path: ./src/EventOrganizer.WebApi/Dockerfile
+      docker_repository_name: eo-web-api
+      push: true
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
