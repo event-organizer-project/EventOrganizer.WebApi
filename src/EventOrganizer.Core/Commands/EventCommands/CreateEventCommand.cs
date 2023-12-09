@@ -3,6 +3,7 @@ using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Repositories;
 using EventOrganizer.Core.Services;
 using EventOrganizer.Domain.Models;
+using FluentValidation;
 
 namespace EventOrganizer.Core.Commands.EventCommands
 {
@@ -16,17 +17,16 @@ namespace EventOrganizer.Core.Commands.EventCommands
 
         private readonly ISchedulerClient schedulerClient;
 
+        private readonly IValidator<EventModel> eventValidator;
+
         public CreateEventCommand(IEventRepository eventRepository, IMapper mapper,
-            IUserHandler userHandler, ISchedulerClient schedulerClient)
+            IUserHandler userHandler, ISchedulerClient schedulerClient, IValidator<EventModel> eventValidator)
         {
-            this.eventRepository = eventRepository
-                ?? throw new ArgumentNullException(nameof(eventRepository));
-            this.mapper = mapper
-                ?? throw new ArgumentNullException(nameof(mapper));
-            this.userHandler = userHandler
-                ?? throw new ArgumentNullException(nameof(userHandler));
-            this.schedulerClient = schedulerClient
-                ?? throw new ArgumentNullException(nameof(schedulerClient));
+            this.eventRepository = eventRepository ?? throw new ArgumentNullException(nameof(eventRepository));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.userHandler = userHandler ?? throw new ArgumentNullException(nameof(userHandler));
+            this.schedulerClient = schedulerClient ?? throw new ArgumentNullException(nameof(schedulerClient));
+            this.eventValidator = eventValidator ?? throw new ArgumentNullException(nameof(eventValidator));
         }
 
         public EventDetailDTO Execute(CreateEventCommandParameters parameters)
@@ -37,6 +37,8 @@ namespace EventOrganizer.Core.Commands.EventCommands
 
             eventModel.Owner = userHandler.GetCurrentUser();
             eventModel.Members = new[] { eventModel.Owner };
+
+            eventValidator.ValidateAndThrow(eventModel);
 
             var result = eventRepository.Create(eventModel);
 

@@ -1,6 +1,7 @@
 ﻿using EventOrganizer.Core.Services;
 using EventOrganizer.WebApi.Infrastructure;
 using IdentityModel.Client;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Security;
 

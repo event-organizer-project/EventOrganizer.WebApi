@@ -22,6 +22,7 @@ using EventOrganizer.WebApi.Infrastructure;
 using EventOrganizer.Core.Commands.SubscriptionCommands;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using System.Security.Cryptography.X509Certificates;
+using EventOrganizer.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,6 +80,8 @@ builder.Services.AddTransient<IWeekHandler, WeekHandler>();
 builder.Services.AddTransient<IHealthService, HealthService>();
 
 builder.Services.AddSingleton<ILoggerProvider, CustomLoggerProvider>();
+
+builder.Services.AddValidators();
 
 builder.Services.AddControllers();
 
