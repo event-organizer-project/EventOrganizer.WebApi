@@ -24,6 +24,8 @@ namespace EventOrganizer.EF
 
         public DbSet<Subscription> Subscriptions { get; set; }
 
+        public DbSet<LogRecord> LogRecords { get; set; }
+
         public EventOrganazerDbContext(DbContextOptions options)
             : base(options)
         { }

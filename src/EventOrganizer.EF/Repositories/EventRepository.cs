@@ -48,7 +48,7 @@ namespace EventOrganizer.EF.Repositories
             return Get(eventModel.Id);
         }
 
-        public void Delete(int id)
+        public EventModel Delete(int id)
         {
             var eventModel = dbContext.EventModels.FirstOrDefault(x => x.Id == id);
 
@@ -59,6 +59,8 @@ namespace EventOrganizer.EF.Repositories
             dbContext.EventModels.Remove(eventModel);
 
             dbContext.SaveChanges();
+
+            return eventModel;
         }
     }
 }

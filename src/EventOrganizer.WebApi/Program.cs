@@ -54,6 +54,7 @@ builder.Services.AddTransient<IEventRepository, EventRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ITagRepository, TagRepository>();
 builder.Services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
+builder.Services.AddTransient<ILogRepository, LogRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -87,6 +88,8 @@ builder.Services.AddHttpLogging(logging =>
     logging.RequestBodyLogLimit = 4096;
     logging.ResponseBodyLogLimit = 4096;
 });
+
+builder.Services.AddSingleton<ILoggerProvider, CustomLoggerProvider>();
 
 var webOptions = builder.Configuration.GetSection(nameof(WebOptions)).Get<WebOptions>();
 

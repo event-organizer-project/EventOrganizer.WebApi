@@ -16,6 +16,7 @@ namespace EventOrganizer.EF.MySql
             modelBuilder.ApplyConfiguration(new ModelConfigurations.TagToEventConfiguration());
             modelBuilder.ApplyConfiguration(new EventTagConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new LogRecordConfiguration());
 
             InitialDataSeeding.Filling(modelBuilder);
         }
