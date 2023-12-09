@@ -1,5 +1,6 @@
 ﻿using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Repositories;
+using EventOrganizer.Core.Services;
 
 namespace EventOrganizer.Core.Commands.EventCommands
 {
@@ -7,9 +8,12 @@ namespace EventOrganizer.Core.Commands.EventCommands
     {
         private readonly IEventRepository eventRepository;
 
-        public DeleteEventCommand(IEventRepository eventRepository)
+        private readonly ISchedulerClient schedulerClient;
+
+        public DeleteEventCommand(IEventRepository eventRepository, ISchedulerClient schedulerClient)
         {
             this.eventRepository = eventRepository ?? throw new ArgumentNullException(nameof(eventRepository));
+            this.schedulerClient = schedulerClient ?? throw new ArgumentNullException(nameof(schedulerClient));
         }
 
         public VoidResult Execute(DeleteEventCommandParameters parameters)
@@ -17,7 +21,12 @@ namespace EventOrganizer.Core.Commands.EventCommands
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
-            eventRepository.Delete(parameters.EventId);
+            var result = eventRepository.Delete(parameters.EventId);
+
+            if (result.StartDate == DateTime.Today)
+            {
+                schedulerClient.RemoveEventFromSchedule(result.Id);
+            }
 
             return new VoidResult();
         }

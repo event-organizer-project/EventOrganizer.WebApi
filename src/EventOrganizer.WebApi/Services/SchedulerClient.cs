@@ -1,6 +1,7 @@
 ﻿using EventOrganizer.Core.Services;
 using EventOrganizer.WebApi.Infrastructure;
 using IdentityModel.Client;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Security;
 
@@ -8,14 +9,18 @@ namespace EventOrganizer.WebApi.Services
 {
     public class SchedulerClient : ISchedulerClient
     {
+        private readonly ILogger<SchedulerClient> logger;
+
         private static readonly HttpClient client = new();
 
         private readonly ClientCredentialsTokenRequest tokenRequest;
 
         private readonly string endpoint;
 
-        public SchedulerClient(IOptions<WebOptions> options)
+        public SchedulerClient(IOptions<WebOptions> options, ILogger<SchedulerClient> logger)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
             var webOptions = options.Value;
 
             tokenRequest = new ClientCredentialsTokenRequest
@@ -33,7 +38,7 @@ namespace EventOrganizer.WebApi.Services
             await Request(() => client.PostAsync(GetEndpoint(eventId, userId), null));
         }
 
-        public async Task RemoveEventFromSchedule(int eventId, int userId)
+        public async Task RemoveEventFromSchedule(int eventId, int? userId = null)
         {
             await Request(() => client.DeleteAsync(GetEndpoint(eventId, userId)));
         }
@@ -55,9 +60,9 @@ namespace EventOrganizer.WebApi.Services
                 var response = await request();
                 response.EnsureSuccessStatusCode();
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException exception)
             {
-                // TO DO: Add logger
+                logger.LogError(exception, "SchedulerClient request failed.");
             }
             catch (SecurityException)
             {
@@ -66,6 +71,6 @@ namespace EventOrganizer.WebApi.Services
         }
 
         private string GetEndpoint(int eventId, int? userId = null) =>
-            $"{endpoint}/scheduler/{eventId}/{userId}";
+            $"{endpoint}/scheduler/{eventId}{(userId.HasValue ? '/' + userId : string.Empty)}";
     }
 }

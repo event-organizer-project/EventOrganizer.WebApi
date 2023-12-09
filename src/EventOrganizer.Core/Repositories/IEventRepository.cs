@@ -12,6 +12,6 @@ namespace EventOrganizer.Core.Repositories
 
         EventModel Update(EventModel eventModel);
 
-        void Delete(int id);
+        EventModel Delete(int id);
     }
 }

@@ -57,7 +57,7 @@ namespace EventOrganizer.EF.MySql.Repositories
             return result;
         }
 
-        public void Delete(int id)
+        public EventModel Delete(int id)
         {
             var eventModel = dbContext.EventModels
                 .Include(x => x.EventTags)
@@ -71,6 +71,8 @@ namespace EventOrganizer.EF.MySql.Repositories
             dbContext.EventModels.Remove(eventModel);
 
             dbContext.SaveChanges();
+
+            return eventModel;
         }
     }
 }
