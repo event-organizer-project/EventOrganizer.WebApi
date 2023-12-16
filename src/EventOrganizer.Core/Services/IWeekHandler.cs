@@ -4,6 +4,6 @@ namespace EventOrganizer.Core.Services
 {
     public interface IWeekHandler
     {
-        WeeklyScheduleDTO GetCurrentWeek();
+        WeeklyScheduleDTO GetWeek(int offset);
     }
 }

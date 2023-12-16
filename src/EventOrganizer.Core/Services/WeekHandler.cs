@@ -10,23 +10,24 @@ namespace EventOrganizer.Core.Services
             DayOfWeek.Saturday, DayOfWeek.Sunday
         };
 
+        private const int visibleWeekDaysCount = 7;
         private const int weekDaysCount = 7;
 
-        public WeeklyScheduleDTO GetCurrentWeek()
+        public WeeklyScheduleDTO GetWeek(int offset)
         {
             var week = new WeeklyScheduleDTO
             {
-                WeekDays = new DaylyScheduleDTO[weekDaysCount]
+                WeekDays = new DaylyScheduleDTO[visibleWeekDaysCount]
             };
 
             var currentDate = DateTime.Today;
             var currentDayOfWeek = currentDate.DayOfWeek;
 
-            var startOfWeek = currentDayOfWeek != DayOfWeek.Sunday 
-                ? currentDate.AddDays(-(int)currentDayOfWeek + (int)DayOfWeek.Monday)
-                : currentDate.AddDays(-6);
+            var startOfWeek = currentDayOfWeek != DayOfWeek.Sunday
+                ? currentDate.AddDays(-(int)currentDayOfWeek + (int)DayOfWeek.Monday + offset * weekDaysCount)
+                : currentDate.AddDays(1 - visibleWeekDaysCount + offset * weekDaysCount);
 
-            for(int i = 0; i < weekDaysCount; i++)
+            for (int i = 0; i < visibleWeekDaysCount; i++)
             {
                 week.WeekDays[i] = new DaylyScheduleDTO
                 {

@@ -24,14 +24,15 @@ namespace EventOrganizer.WebApi.Controllers
         }
 
         /// <summary>
-        /// Returns current user profile details.
+        /// Returns weekly schedule
         /// </summary>
-        /// <returns>Event</returns>
+        /// <param name="offset">Week offset</param>
+        /// <returns>Weekly schedule</returns>
         [SwaggerResponse((int)HttpStatusCode.OK)]
-        [HttpGet("current")]
-        public ActionResult<UserDTO> Get()
+        [HttpGet("{offset}")]
+        public ActionResult<WeeklyScheduleDTO> Get(int offset)
         {
-            var result = qetWeeklyScheduleQuery.Execute(new GetWeeklyScheduleQueryParameters());
+            var result = qetWeeklyScheduleQuery.Execute(new GetWeeklyScheduleQueryParameters(offset));
 
             return Ok(result);
         }

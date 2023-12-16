@@ -37,10 +37,10 @@ namespace EventOrganizer.Core.Queries.CalendarQueries
 
             var userOwnEvents = eventRepository
                 .GetAll()
-                .Where(e => e.Owner.Id == user.Id || e.Members.Select(x => x.Id).Contains(user.Id))
+                .Where(e => e.Members.Select(x => x.Id).Contains(user.Id))
                 .ToArray();
 
-            var week = weekHandler.GetCurrentWeek();
+            var week = weekHandler.GetWeek(parameters.Offset);
 
             foreach( var day in week.WeekDays)
             {
