@@ -64,6 +64,10 @@ builder.Services.AddSingleton<IUserContextAccessor, UserContextAccessor>();
 builder.Services.AddTransient<IUserHandler, UserHandler>();
 builder.Services.AddTransient<IWeekHandler, WeekHandler>();
 
+builder.Services.AddTransient<IHealthService, HealthService>();
+
+builder.Services.AddSingleton<ILoggerProvider, CustomLoggerProvider>();
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -81,6 +85,7 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
+/*
 builder.Services.AddHttpLogging(logging =>
 {
     logging.LoggingFields = HttpLoggingFields.All ^ HttpLoggingFields.RequestHeaders;
@@ -88,9 +93,7 @@ builder.Services.AddHttpLogging(logging =>
     logging.RequestBodyLogLimit = 4096;
     logging.ResponseBodyLogLimit = 4096;
 });
-
-builder.Services.AddSingleton<ILoggerProvider, CustomLoggerProvider>();
-
+*/
 var webOptions = builder.Configuration.GetSection(nameof(WebOptions)).Get<WebOptions>();
 
 builder.Services.AddAuthentication("Bearer")
@@ -121,7 +124,7 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Event Organizer V1");
 });
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

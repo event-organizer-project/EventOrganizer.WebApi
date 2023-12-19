@@ -44,15 +44,12 @@ namespace EventOrganizer.WebApi.Services
         /// <param name="formatter">A delegate that formats </param>  
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
+            if (!IsEnabled(logLevel))
+                return;
+
             using var scope = serviceProvider.CreateScope();
 
             var logRepository = scope.ServiceProvider.GetRequiredService<ILogRepository>();
-
-            if (!IsEnabled(logLevel))
-            {
-                // Don't log the entry if it's not enabled.  
-                return;
-            }
 
             var record = new LogRecord();
 
@@ -80,7 +77,7 @@ namespace EventOrganizer.WebApi.Services
             }
             if (!string.IsNullOrWhiteSpace(exception?.StackTrace))
             {
-                record.StackTrace = FormatStackTrace(exception.StackTrace);
+                record.StackTrace = exception.StackTrace;
             }
             if (!string.IsNullOrWhiteSpace(exception?.Source))
             {
@@ -98,15 +95,6 @@ namespace EventOrganizer.WebApi.Services
             record.CreatedAt = DateTime.UtcNow;
 
             logRepository.SaveLog(record);
-        }
-
-        private static string FormatStackTrace(string stackTrace)
-        {
-            //var rows = stackTrace.Split("\r\n   ").Select(x => x[3..]);
-
-            var result = stackTrace;
-
-            return result;
         }
     }
 }
