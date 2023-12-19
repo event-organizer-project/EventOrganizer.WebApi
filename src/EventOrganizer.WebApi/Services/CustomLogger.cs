@@ -93,6 +93,7 @@ namespace EventOrganizer.WebApi.Services
 
             record.CallerName = categoryName;
             record.CreatedAt = DateTime.UtcNow;
+            record.Application = "web-api";
 
             logRepository.SaveLog(record);
         }
