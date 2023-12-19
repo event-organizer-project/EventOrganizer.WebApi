@@ -16,6 +16,8 @@
 
         public string CallerName { get; set; }
 
+        public string? Application { get; set; }
+
         public DateTime CreatedAt { get; set; }
     }
 }
