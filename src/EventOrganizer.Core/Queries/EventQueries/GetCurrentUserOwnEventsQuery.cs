@@ -43,7 +43,7 @@ namespace EventOrganizer.Core.Queries.EventQueries
                     .Select(e => mapper.Map<EventDTO>(e))
                     .ToList(),
                 JoinedEvents = userOwnEvents
-                    .Where(e => e.Members.Select(x => x.Id).Contains(user.Id))
+                    .Where(e => e.Members.Select(x => x.Id).Contains(user.Id) && e.Owner.Id != user.Id)
                     .Select(e => mapper.Map<EventDTO>(e))
                     .ToList()
             };
