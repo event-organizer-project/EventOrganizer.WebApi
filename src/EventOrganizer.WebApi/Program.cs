@@ -34,6 +34,9 @@ builder.Services.AddDbContext<EventOrganazerMySqlDbContext>(options => {
     });
 });
 
+
+
+
 if (builder.Environment.IsDevelopment())
 {
     builder.WebHost.ConfigureKestrel(options =>
