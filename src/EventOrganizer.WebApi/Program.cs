@@ -20,6 +20,8 @@ using EventOrganizer.Core.Queries.CalendarQueries;
 using EventOrganizer.Core.Queries.TagQueries;
 using EventOrganizer.WebApi.Infrastructure;
 using EventOrganizer.Core.Commands.SubscriptionCommands;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
+using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,16 @@ builder.Services.AddDbContext<EventOrganazerMySqlDbContext>(options => {
     });
 });
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.WebHost.ConfigureKestrel(options =>
+        options.ConfigureHttpsDefaults(opt =>
+        {
+            opt.SslProtocols = System.Security.Authentication.SslProtocols.Tls12;
+            opt.ClientCertificateMode = ClientCertificateMode.AllowCertificate;
+            opt.ServerCertificate = new X509Certificate2("aspnetapp.pfx", "password");
+        }));
+}
 
 builder.Services.AddTransient<ISchedulerClient, SchedulerClient>();
 
