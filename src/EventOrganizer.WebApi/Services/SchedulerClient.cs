@@ -1,7 +1,6 @@
 ﻿using EventOrganizer.Core.Services;
 using EventOrganizer.WebApi.Infrastructure;
 using IdentityModel.Client;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Security;
 
@@ -38,9 +37,9 @@ namespace EventOrganizer.WebApi.Services
             await Request(() => client.PostAsync(GetEndpoint(eventId, userId), null));
         }
 
-        public async Task RemoveEventFromSchedule(int eventId, int? userId = null)
+        public async Task RemoveEventFromSchedule(int eventId,params int[] userIds)
         {
-            await Request(() => client.DeleteAsync(GetEndpoint(eventId, userId)));
+            await Request(() => client.DeleteAsync(GetEndpoint(eventId, userIds)));
         }
 
         private async Task Request(Func<Task<HttpResponseMessage>> request)
@@ -70,7 +69,7 @@ namespace EventOrganizer.WebApi.Services
             }
         }
 
-        private string GetEndpoint(int eventId, int? userId = null) =>
-            $"{endpoint}/scheduler/{eventId}{(userId.HasValue ? '/' + userId : string.Empty)}";
+        private string GetEndpoint(int eventId,params int[] userIds) =>
+            $"{endpoint}/scheduler/{eventId}/{string.Join(',', userIds)}";
     }
 }

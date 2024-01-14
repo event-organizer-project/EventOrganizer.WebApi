@@ -4,6 +4,6 @@
     {
         Task AddEventToSchedule(int eventId, int userId);
 
-        Task RemoveEventFromSchedule(int eventId, int? userId = null);
+        Task RemoveEventFromSchedule(int eventId, params int[] userIds);
     }
 }
