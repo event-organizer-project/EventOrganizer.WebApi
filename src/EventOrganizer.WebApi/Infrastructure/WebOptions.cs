@@ -11,5 +11,7 @@
         public string WebApiName { get; set; } = string.Empty;
 
         public string SchedulerApiName { get; set; } = string.Empty;
+
+        public bool UseCustomSslCertificates { get; set; }
     }
 }
