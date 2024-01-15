@@ -62,6 +62,7 @@ namespace EventOrganizer.EF.MySql.Repositories
             var eventModel = dbContext.EventModels
                 .Include(x => x.EventTags)
                 .ThenInclude(x => x.TagToEvents)
+                .Include(x => x.Members)
                 .FirstOrDefault(x => x.Id == id);
 
             // TO DO: chanhe logic

@@ -25,7 +25,9 @@ namespace EventOrganizer.Core.Commands.EventCommands
 
             if (result.StartDate == DateTime.Today)
             {
-                schedulerClient.RemoveEventFromSchedule(result.Id);
+                var userIds = result.Members.Select(m => m.Id).ToArray();
+
+                schedulerClient.RemoveEventFromSchedule(result.Id, userIds);
             }
 
             return new VoidResult();

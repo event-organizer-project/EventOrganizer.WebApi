@@ -38,8 +38,10 @@ namespace EventOrganizer.Test.Core.Commands.EventCommands
 
             var actualResult = underTest.Execute(parameters);
 
+            var removedMemberIds = deletedEvent.Members.Select(x => x.Id).ToArray();
+
             eventRepositoryMock.Verify(x => x.Delete(parameters.EventId), Times.Once);
-            schedulerClient.Verify(x => x.RemoveEventFromSchedule(deletedEvent.Id, null), Times.Once);
+            schedulerClient.Verify(x => x.RemoveEventFromSchedule(deletedEvent.Id, removedMemberIds), Times.Once);
         }
     }
 }
