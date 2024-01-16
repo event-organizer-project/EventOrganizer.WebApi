@@ -11,7 +11,6 @@ using EventOrganizer.EF.MySql.Triggers;
 using EventOrganizer.EF.MySql;
 using EventOrganizer.EF;
 using EventOrganizer.WebApi.Services;
-using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -20,30 +19,53 @@ using EventOrganizer.Core.Queries.CalendarQueries;
 using EventOrganizer.Core.Queries.TagQueries;
 using EventOrganizer.WebApi.Infrastructure;
 using EventOrganizer.Core.Commands.SubscriptionCommands;
-using Microsoft.AspNetCore.Server.Kestrel.Https;
 using System.Security.Cryptography.X509Certificates;
 using EventOrganizer.WebApi;
+using IdentityServer4.AccessTokenValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<EventOrganazerMySqlDbContext>(options => {
-    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"));
-    options.UseTriggers(triggerOptions => {
-        triggerOptions.AddTrigger<BeforeEventModifying>();
-        triggerOptions.AddTrigger<AfterTagToEventRemoving>();
-    });
-});
+var webOptions = builder.Configuration.GetSection(nameof(WebOptions)).Get<WebOptions>();
 
-if (builder.Environment.IsDevelopment())
+if (webOptions.UseCustomSslCertificates)
 {
+    var certs = new Dictionary<string, X509Certificate2>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["localhost"] = new X509Certificate2("/app/certificates/localhost.pfx", "password"),
+        ["host.docker.internal"] = new X509Certificate2("/app/certificates/host.docker.internal.pfx", "password")
+    };
+
+    using (var store = new X509Store(StoreName.Root, StoreLocation.CurrentUser))
+    {
+        store.Open(OpenFlags.ReadWrite);
+
+        store.Add(certs["localhost"]);
+        store.Add(certs["host.docker.internal"]);
+    }
+
     builder.WebHost.ConfigureKestrel(options =>
         options.ConfigureHttpsDefaults(opt =>
         {
             opt.SslProtocols = System.Security.Authentication.SslProtocols.Tls12;
-            opt.ClientCertificateMode = ClientCertificateMode.AllowCertificate;
-            opt.ServerCertificate = new X509Certificate2("aspnetapp.pfx", "password");
+            opt.ServerCertificateSelector = (connectionContext, name) =>
+            {
+                if (name is not null && certs.TryGetValue(name, out var cert))
+                    return cert;
+
+                return certs["localhost"];
+            };
         }));
 }
+
+builder.Services.AddDbContext<EventOrganazerMySqlDbContext>(options =>
+{
+    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseTriggers(triggerOptions =>
+    {
+        triggerOptions.AddTrigger<BeforeEventModifying>();
+        triggerOptions.AddTrigger<AfterTagToEventRemoving>();
+    });
+});
 
 builder.Services.AddTransient<ISchedulerClient, SchedulerClient>();
 
@@ -109,10 +131,9 @@ builder.Services.AddHttpLogging(logging =>
     logging.ResponseBodyLogLimit = 4096;
 });
 */
-var webOptions = builder.Configuration.GetSection(nameof(WebOptions)).Get<WebOptions>();
 
-builder.Services.AddAuthentication("Bearer")
-    .AddIdentityServerAuthentication("Bearer", options =>
+builder.Services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+    .AddIdentityServerAuthentication(options =>
     {
         options.ApiName = webOptions.WebApiName;
         options.Authority = webOptions.Authority;
