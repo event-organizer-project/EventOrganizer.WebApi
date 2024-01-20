@@ -22,6 +22,7 @@ using EventOrganizer.Core.Commands.SubscriptionCommands;
 using System.Security.Cryptography.X509Certificates;
 using EventOrganizer.WebApi;
 using IdentityServer4.AccessTokenValidation;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -153,6 +154,15 @@ builder.Services.AddCors(options =>
 builder.Services.Configure<WebOptions>(builder.Configuration.GetSection(nameof(WebOptions)));
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+
+    var context = scope.ServiceProvider.GetRequiredService<EventOrganazerMySqlDbContext>();
+
+    context.Database.Migrate();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
