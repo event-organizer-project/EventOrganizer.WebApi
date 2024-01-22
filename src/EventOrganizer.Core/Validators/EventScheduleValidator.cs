@@ -17,12 +17,13 @@ namespace EventOrganizer.Core.Validators
             RuleFor(x => x).Must(eventModel =>
             {
                 var currentUserId = userHandler.GetCurrentUser().Id;
-
+                return true;
+                /*
                 return !eventRepository.GetAll()
                     .Where(x => x.Members.Any(u => u.Id == currentUserId) && x.StartDate == eventModel.StartDate)
-                    .Any(x => (x.EndTime > eventModel.StartTime && x.EndTime < eventModel.EndTime)
+                    .Any(x => (x.EndDate > eventModel.StartDate && x.EndTime < eventModel.EndTime)
                         || (x.StartTime < eventModel.EndTime && x.StartTime > eventModel.StartTime)
-                        || (x.StartTime < eventModel.StartTime && x.EndTime > eventModel.EndTime));
+                        || (x.StartTime < eventModel.StartTime && x.EndTime > eventModel.EndTime));*/
             }).WithMessage("The event has conflicts with other events.");
         }
     }

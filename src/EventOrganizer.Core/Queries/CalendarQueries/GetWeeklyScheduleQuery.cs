@@ -38,14 +38,15 @@ namespace EventOrganizer.Core.Queries.CalendarQueries
             var userOwnEvents = eventRepository
                 .GetAll()
                 .Where(e => e.Members.Select(x => x.Id).Contains(user.Id))
+                //TO DO: add where for start and end time dependigs to weeks
                 .ToArray();
 
-            var week = weekHandler.GetWeek(parameters.Offset);
+            var week = weekHandler.GetWeek(parameters.WeekOffset, parameters.TimeZoneOffsetInMinutes);
 
             foreach( var day in week.WeekDays)
             {
                 day.Events = userOwnEvents
-                    .Where(e => e.StartDate == day.Date)
+                    .Where(e => e.StartDate.Date == day.Date.UtcDateTime.Date)
                     .Select(e => mapper.Map<EventDTO>(e))
                     .ToArray();
             }

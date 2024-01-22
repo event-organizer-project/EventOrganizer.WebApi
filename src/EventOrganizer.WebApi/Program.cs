@@ -101,7 +101,7 @@ builder.Services.AddTransient<IWeekHandler, WeekHandler>();
 
 builder.Services.AddTransient<IHealthService, HealthService>();
 
-builder.Services.AddSingleton<ILoggerProvider, CustomLoggerProvider>();
+//builder.Services.AddSingleton<ILoggerProvider, CustomLoggerProvider>();
 
 builder.Services.AddValidators();
 
@@ -153,6 +153,15 @@ builder.Services.AddCors(options =>
 builder.Services.Configure<WebOptions>(builder.Configuration.GetSection(nameof(WebOptions)));
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+
+    var context = scope.ServiceProvider.GetRequiredService<EventOrganazerMySqlDbContext>();
+
+    context.Database.Migrate();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

@@ -29,20 +29,16 @@ namespace EventOrganizer.EF.MySql
                 Id = 1,
                 Title = "Event organizer presentation",
                 Description = "Mastery completion and presentation of the final product",
-                StartDate = new DateTime(2023, 5, 28),
-                EndDate = new DateTime(2023, 5, 28),
-                StartTime = new TimeSpan(18, 0, 0),
-                EndTime = new TimeSpan(20, 0, 0),
+                StartDate = new DateTimeOffset(2024, 1, 24, 12, 30, 0, TimeSpan.Zero),
+                EndDate = new DateTimeOffset(2024, 1, 24, 14, 30, 0, TimeSpan.Zero),
                 OwnerId = 1
             }, new OnlineEvent
             {
                 Id = 2,
                 Title = "Event created by John",
                 Description = "Description created by John",
-                StartDate = new DateTime(2023, 8, 11),
-                EndDate = new DateTime(2023, 8, 11),
-                StartTime = new TimeSpan(15, 0, 0),
-                EndTime = new TimeSpan(17, 0, 0),
+                StartDate = new DateTimeOffset(2024, 1, 26, 18, 0, 0, TimeSpan.Zero),
+                EndDate = new DateTimeOffset(2024, 1, 26, 20, 0, 0, TimeSpan.Zero),
                 OwnerId = 2
             });
 

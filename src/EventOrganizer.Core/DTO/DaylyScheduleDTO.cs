@@ -4,7 +4,7 @@
     {
         public string WeekDay { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
         
         public EventDTO[] Events { get; set; }
     }

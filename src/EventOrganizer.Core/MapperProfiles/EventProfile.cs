@@ -17,20 +17,6 @@ namespace EventOrganizer.Core.MapperProfiles
         {
             CreateMap<EventModel, EventDTO>()
                 .ForMember(
-                    dest => dest.StartDate,
-                    opt => opt.MapFrom(src => DateOnly.FromDateTime(src.StartDate)))
-                .ForMember(
-                    dest => dest.EndDate,
-                    opt => opt.MapFrom(src => src.EndDate.HasValue
-                        ? DateOnly.FromDateTime(src.EndDate.Value)
-                        : (DateOnly?)null))
-                .ForMember(
-                    dest => dest.StartTime,
-                    opt => opt.MapFrom(src => TimeOnly.FromTimeSpan(src.StartTime)))
-                .ForMember(
-                    dest => dest.EndTime,
-                    opt => opt.MapFrom(src => TimeOnly.FromTimeSpan(src.EndTime)))
-                .ForMember(
                     dest => dest.EventTags,
                     opt => opt.MapFrom(src => src.EventTags.Select(t => t.Keyword)));
         }
@@ -39,20 +25,6 @@ namespace EventOrganizer.Core.MapperProfiles
         {
             CreateMap<EventModel, EventDetailDTO>()
                 .ForMember(
-                    dest => dest.StartDate,
-                    opt => opt.MapFrom(src => DateOnly.FromDateTime(src.StartDate)))
-                .ForMember(
-                    dest => dest.EndDate,
-                    opt => opt.MapFrom(src => src.EndDate.HasValue
-                        ? DateOnly.FromDateTime(src.EndDate.Value)
-                        : (DateOnly?)null))
-                .ForMember(
-                    dest => dest.StartTime,
-                    opt => opt.MapFrom(src => TimeOnly.FromTimeSpan(src.StartTime)))
-                .ForMember(
-                    dest => dest.EndTime,
-                    opt => opt.MapFrom(src => TimeOnly.FromTimeSpan(src.EndTime)))
-                .ForMember(
                     dest => dest.EventTags,
                     opt => opt.MapFrom(src => src.EventTags.Select(t => t.Keyword)));
         }
@@ -60,20 +32,6 @@ namespace EventOrganizer.Core.MapperProfiles
         public void CreateMapEventDetailDTOToEventModel()
         {
             CreateMap<EventDetailDTO, EventModel>()
-                .ForMember(
-                    dest => dest.StartDate,
-                    opt => opt.MapFrom(src => src.StartDate.ToDateTime(TimeOnly.MinValue)))
-                .ForMember(
-                    dest => dest.EndDate,
-                    opt => opt.MapFrom(src => src.EndDate.HasValue
-                        ? src.EndDate.Value.ToDateTime(TimeOnly.MinValue)
-                        : (DateTime?)null))
-                .ForMember(
-                    dest => dest.StartTime, 
-                    opt => opt.MapFrom(src => src.StartTime.ToTimeSpan()))
-                .ForMember(
-                    dest => dest.EndTime,
-                    opt => opt.MapFrom(src => src.EndTime.ToTimeSpan()))
                 .ForMember(
                     dest => dest.TagToEvents,
                     opt => opt.MapFrom((src, dest) => src.EventTags

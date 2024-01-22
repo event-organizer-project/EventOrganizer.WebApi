@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EventOrganizer.Core.CustomExceptions;
 using EventOrganizer.Core.DTO;
+using EventOrganizer.Core.Helpers;
 using EventOrganizer.Core.Repositories;
 using EventOrganizer.Core.Services;
 
@@ -51,7 +52,7 @@ namespace EventOrganizer.Core.Commands.EventCommands
                 
             var result = eventRepository.Update(eventModel);
 
-            if (result.StartDate == DateTime.Today)
+            if (EventSchedulingHelper.IsDateTheRestOfToday(result.StartDate))
             {
                 var schedulerResult = parameters.IsEventScheduled
                     ? schedulerClient.AddEventToSchedule(result.Id, currentUser.Id)

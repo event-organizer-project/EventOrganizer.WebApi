@@ -1,8 +1,10 @@
 ﻿using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Queries;
 using EventOrganizer.Core.Queries.CalendarQueries;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
@@ -26,13 +28,16 @@ namespace EventOrganizer.WebApi.Controllers
         /// <summary>
         /// Returns weekly schedule
         /// </summary>
-        /// <param name="offset">Week offset</param>
+        /// <param name="weekOffset">Week offset</param>
         /// <returns>Weekly schedule</returns>
         [SwaggerResponse((int)HttpStatusCode.OK)]
-        [HttpGet("{offset}")]
-        public ActionResult<WeeklyScheduleDTO> Get(int offset)
+        [HttpGet("{weekOffset}")]
+        public ActionResult<WeeklyScheduleDTO> Get(int weekOffset)
         {
-            var result = qetWeeklyScheduleQuery.Execute(new GetWeeklyScheduleQueryParameters(offset));
+            Request.Headers.TryGetValue("TimeZoneOffset", out var timeZoneHeaderValue);
+            int.TryParse(timeZoneHeaderValue, out int timeZoneOffsetInMinutes);
+
+            var result = qetWeeklyScheduleQuery.Execute(new GetWeeklyScheduleQueryParameters(weekOffset, timeZoneOffsetInMinutes));
 
             return Ok(result);
         }

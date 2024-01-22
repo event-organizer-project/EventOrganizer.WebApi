@@ -10,13 +10,11 @@ namespace EventOrganizer.Core.DTO
 
         public string Description { get; set; } = string.Empty;
 
-        public DateOnly StartDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
 
-        public DateOnly? EndDate { get; set; }
+        public DateTimeOffset EndDate { get; set; }
 
-        public TimeOnly StartTime { get; set; }
-
-        public TimeOnly EndTime { get; set; }
+        public DateTimeOffset? LastEndDate { get; set; }
 
         public RecurrenceType RecurrenceType { get; set; }
 
