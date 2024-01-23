@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EventOrganizer.Core.DTO;
+using EventOrganizer.Core.Helpers;
 using EventOrganizer.Core.Repositories;
 using EventOrganizer.Core.Services;
 using EventOrganizer.Domain.Models;
@@ -42,7 +43,7 @@ namespace EventOrganizer.Core.Commands.EventCommands
 
             var result = eventRepository.Create(eventModel);
 
-            if (result.StartDate == DateTime.Today)
+            if (EventSchedulingHelper.IsDateTheRestOfToday(result.StartDate))
             {
                 schedulerClient.AddEventToSchedule(result.Id, result.OwnerId);
             }

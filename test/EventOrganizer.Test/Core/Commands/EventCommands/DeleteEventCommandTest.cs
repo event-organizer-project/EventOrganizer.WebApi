@@ -28,7 +28,7 @@ namespace EventOrganizer.Test.Core.Commands.EventCommands
             var parameters = fixture.Create<DeleteEventCommandParameters>();
 
             var deletedEvent = fixture.Build<EventModel>()
-                .With(x => x.StartDate, DateTime.Today)
+                .With(x => x.StartDate, DateTime.UtcNow.AddHours(1))
                 .Create();
 
             var expectedResult = fixture.Create<EventDetailDTO>();

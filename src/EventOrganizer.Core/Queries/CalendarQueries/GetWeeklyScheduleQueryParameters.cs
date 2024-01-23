@@ -2,11 +2,14 @@
 {
     public class GetWeeklyScheduleQueryParameters
     {
-        public GetWeeklyScheduleQueryParameters(int offset)
+        public GetWeeklyScheduleQueryParameters(int weekOffset, int timeZoneOffsetInMinutes = 0)
         {
-            Offset = offset;
+            WeekOffset = weekOffset;
+            TimeZoneOffsetInMinutes = timeZoneOffsetInMinutes;
         }
 
-        public int Offset {  get; set; }
+        public int WeekOffset {  get; set; }
+        public int TimeZoneOffsetInMinutes { get; set; }
+
     }
 }

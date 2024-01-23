@@ -1,4 +1,5 @@
 ﻿using EventOrganizer.Core.DTO;
+using EventOrganizer.Core.Helpers;
 using EventOrganizer.Core.Repositories;
 using EventOrganizer.Core.Services;
 
@@ -23,7 +24,7 @@ namespace EventOrganizer.Core.Commands.EventCommands
 
             var result = eventRepository.Delete(parameters.EventId);
 
-            if (result.StartDate == DateTime.Today)
+            if (EventSchedulingHelper.IsDateTheRestOfToday(result.StartDate))
             {
                 var userIds = result.Members.Select(m => m.Id).ToArray();
 

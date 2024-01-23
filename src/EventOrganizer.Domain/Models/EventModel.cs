@@ -9,13 +9,11 @@
         public string Description { get; set; }
 
         // Event Time Settings
-        public DateTime StartDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
 
-        public DateTime? EndDate { get; set; }
+        public DateTimeOffset EndDate { get; set; }
 
-        public TimeSpan StartTime { get; set; }
-
-        public TimeSpan EndTime { get; set; }
+        public DateTimeOffset? LastEndDate { get; set; }
 
         public RecurrenceType RecurrenceType { get; set; }
         // Event Time Settings
