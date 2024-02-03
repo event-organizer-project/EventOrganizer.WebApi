@@ -19,44 +19,16 @@ using EventOrganizer.Core.Queries.CalendarQueries;
 using EventOrganizer.Core.Queries.TagQueries;
 using EventOrganizer.WebApi.Infrastructure;
 using EventOrganizer.Core.Commands.SubscriptionCommands;
-using System.Security.Cryptography.X509Certificates;
 using EventOrganizer.WebApi;
 using IdentityServer4.AccessTokenValidation;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using ILogRepository = EventOrganizer.Utils.Logging.ILogRepository;
+using EventOrganizer.Utils.WebApplicationExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var webOptions = builder.Configuration.GetSection(nameof(WebOptions)).Get<WebOptions>();
 
-if (webOptions.UseCustomSslCertificates)
-{
-    var certs = new Dictionary<string, X509Certificate2>(StringComparer.OrdinalIgnoreCase)
-    {
-        ["localhost"] = new X509Certificate2("/app/certificates/localhost.pfx", "password"),
-        ["host.docker.internal"] = new X509Certificate2("/app/certificates/host.docker.internal.pfx", "password")
-    };
-
-    using (var store = new X509Store(StoreName.Root, StoreLocation.CurrentUser))
-    {
-        store.Open(OpenFlags.ReadWrite);
-
-        store.Add(certs["localhost"]);
-        store.Add(certs["host.docker.internal"]);
-    }
-
-    builder.WebHost.ConfigureKestrel(options =>
-        options.ConfigureHttpsDefaults(opt =>
-        {
-            opt.SslProtocols = System.Security.Authentication.SslProtocols.Tls12;
-            opt.ServerCertificateSelector = (connectionContext, name) =>
-            {
-                if (name is not null && certs.TryGetValue(name, out var cert))
-                    return cert;
-
-                return certs["localhost"];
-            };
-        }));
-}
+builder.ConfigureCertificates();
 
 builder.Services.AddDbContext<EventOrganazerMySqlDbContext>(options =>
 {
@@ -102,7 +74,7 @@ builder.Services.AddTransient<IWeekHandler, WeekHandler>();
 
 builder.Services.AddTransient<IHealthService, HealthService>();
 
-//builder.Services.AddSingleton<ILoggerProvider, CustomLoggerProvider>();
+builder.Services.AddCustomLogger();
 
 builder.Services.AddValidators();
 
