@@ -23,6 +23,7 @@ using EventOrganizer.WebApi;
 using IdentityServer4.AccessTokenValidation;
 using ILogRepository = EventOrganizer.Utils.Logging.ILogRepository;
 using EventOrganizer.Utils.WebApplicationExtensions;
+using EventOrganizer.WebApi.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,7 +79,12 @@ builder.Services.AddCustomLogger();
 
 builder.Services.AddValidators();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<InternalServerErrorExceptionFilterAttribute>();
+    options.Filters.Add<NotFoundExceptionFilterAttribute>();
+    options.Filters.Add<BadRequestExceptionFilterAttribute>();
+});
 
 builder.Services.AddEndpointsApiExplorer();
 
