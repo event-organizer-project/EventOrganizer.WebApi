@@ -24,11 +24,8 @@ namespace EventOrganizer.Core.Queries.EventQueries
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
-            var eventModel = eventRepository
-                .Get(parameters.Id);
-
-            if (eventModel == null)
-                throw new ResourceNotFoundException();
+            var eventModel = eventRepository.Get(parameters.Id)
+                ?? throw new ResourceNotFoundException("Event not found");
 
             var result = mapper.Map<EventDetailDTO>(eventModel);
 

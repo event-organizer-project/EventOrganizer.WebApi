@@ -1,10 +1,8 @@
 ﻿using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Queries;
 using EventOrganizer.Core.Queries.CalendarQueries;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
