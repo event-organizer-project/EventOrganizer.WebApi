@@ -81,7 +81,10 @@ namespace EventOrganizer.WebApi.Controllers
                 Filter = criteria.Filter,
                 Top = criteria.Top,
                 Skip = criteria.Skip,
-                Tags = criteria.Tags
+                Tags = criteria.Tags,
+                StartingFrom = criteria.StartingFrom,
+                EndingBefore = criteria.EndingBefore,
+                OnlyForCurrentUser = criteria.OnlyForCurrentUser
             });
 
             return Ok(result);
