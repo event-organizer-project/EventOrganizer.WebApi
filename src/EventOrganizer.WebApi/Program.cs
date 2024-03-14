@@ -15,7 +15,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Diagnostics.CodeAnalysis;
-using EventOrganizer.Core.Queries.CalendarQueries;
 using EventOrganizer.Core.Queries.TagQueries;
 using EventOrganizer.WebApi.Infrastructure;
 using EventOrganizer.Core.Commands.SubscriptionCommands;
@@ -46,7 +45,6 @@ builder.Services.AddTransient<ISchedulerClient, SchedulerClient>();
 builder.Services.AddTransient<IQuery<GetEventListQueryParameters, IList<EventDTO>>, GetEventListQuery>();
 builder.Services.AddTransient<IQuery<GetEventByIdQueryParameters, EventDetailDTO>, GetEventByIdQuery>();
 builder.Services.AddTransient<IQuery<VoidParameters, UserOwnEventsDTO>, GetCurrentUserOwnEventsQuery>();
-builder.Services.AddTransient<IQuery<GetWeeklyScheduleQueryParameters, WeeklyScheduleDTO>, GetWeeklyScheduleQuery>();
 builder.Services.AddTransient<ICommand<CreateEventCommandParameters, EventDetailDTO>, CreateEventCommand>();
 builder.Services.AddTransient<ICommand<UpdateEventCommandParameters, EventDetailDTO>, UpdateEventCommand>();
 builder.Services.AddTransient<ICommand<DeleteEventCommandParameters, VoidResult>, DeleteEventCommand>();
@@ -71,7 +69,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<IUserContextAccessor, UserContextAccessor>();
 
 builder.Services.AddTransient<IUserHandler, UserHandler>();
-builder.Services.AddTransient<IWeekHandler, WeekHandler>();
 
 builder.Services.AddTransient<IHealthService, HealthService>();
 

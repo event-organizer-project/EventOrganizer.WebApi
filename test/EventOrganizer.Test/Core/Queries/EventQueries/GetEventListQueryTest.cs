@@ -3,6 +3,7 @@ using AutoMapper;
 using EventOrganizer.Core.DTO;
 using EventOrganizer.Core.Queries.EventQueries;
 using EventOrganizer.Core.Repositories;
+using EventOrganizer.Core.Services;
 using EventOrganizer.Domain.Models;
 using Moq;
 
@@ -11,16 +12,17 @@ namespace EventOrganizer.Test.Core.Queries.EventQueries
     public class GetEventListQueryTest : BaseTest<GetEventListQuery>
     {
         private Mock<IEventRepository> eventRepositoryMock;
-
+        private Mock<IUserHandler> userHandlerMock;
         private Mock<IMapper> mapperMock;
 
         [SetUp]
         public void Setup()
         {
             eventRepositoryMock = new Mock<IEventRepository>();
+            userHandlerMock = new Mock<IUserHandler>();
             mapperMock = new Mock<IMapper>();
 
-            underTest = new GetEventListQuery(eventRepositoryMock.Object, mapperMock.Object);
+            underTest = new GetEventListQuery(eventRepositoryMock.Object, userHandlerMock.Object, mapperMock.Object);
         }
 
         [Test]
