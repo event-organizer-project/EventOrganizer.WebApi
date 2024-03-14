@@ -11,7 +11,7 @@ namespace EventOrganizer.Core.Queries.EventQueries
         private readonly IUserHandler userHandler;
         private readonly IMapper mapper;
 
-        public GetEventListQuery(IEventRepository eventRepository, IMapper mapper, IUserHandler userHandler)
+        public GetEventListQuery(IEventRepository eventRepository, IUserHandler userHandler, IMapper mapper)
         {
             this.eventRepository = eventRepository
                 ?? throw new ArgumentNullException(nameof(eventRepository));
